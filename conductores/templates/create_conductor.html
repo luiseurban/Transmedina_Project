@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <form id="createConductorForm" action="{% url 'create_conductor' %}" method="POST" class="card card-body" novalidate>
+
+                <h1>Crear Conductor</h1>
+
+                {% if request.GET.success %}
+                    <p class="alert alert-success">Conductor creado con éxito.</p>
+                {% endif %}
+                {% if error %}
+                    <p class="alert alert-danger">{{ error }}</p>
+                {% endif %}
+
+                {% csrf_token %}
+
+                <!-- Campo Cedula -->
+                <div class="mb-3">
+                    <label for="cedula">Cedula:</label>
+                    <input type="text" name="cedula" id="cedula" class="form-control {% if form.cedula.errors %}is-invalid{% endif %}" placeholder="">
+                    <div class="invalid-feedback">
+                        {% if form.cedula.errors %}
+                            {{ form.cedula.errors|join:", " }}
+                        {% else %}
+                            Por favor, ingrese la cédula.
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Campo Nombre -->
+                <div class="mb-3">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" name="nombre" id="nombre" class="form-control {% if form.nombre.errors %}is-invalid{% endif %}" placeholder="">
+                    <div class="invalid-feedback">Por favor, ingrese el nombre.</div>
+                </div>
+
+                <!-- Campo Apellido -->
+                <div class="mb-3">
+                    <label for="apellido">Apellido:</label>
+                    <input type="text" name="apellido" id="apellido" class="form-control {% if form.apellido.errors %}is-invalid{% endif %}" placeholder="">
+                    <div class="invalid-feedback">Por favor, ingrese el apellido.</div>
+                </div>
+
+                <!-- Campo Usuario -->
+                <div class="mb-3">
+                    <label for="usuario">Usuario:</label>
+                    <input type="text" name="usuario" id="usuario" class="form-control {% if form.usuario.errors %}is-invalid{% endif %}" placeholder="">
+                    <div class="invalid-feedback">Por favor, ingrese el nombre de usuario.</div>
+                </div>
+
+                <!-- Campo Contraseña -->
+                <div class="mb-3">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" name="password" id="password" class="form-control {% if form.password.errors %}is-invalid{% endif %}" placeholder="">
+                    <div class="invalid-feedback">Por favor, ingrese la contraseña.</div>
+                </div>
+
+                <!-- Campo Correo Electrónico -->
+                <div class="mb-3">
+                    <label for="correo">Correo electrónico:</label>
+                    <input type="text" name="correo" id="correo" class="form-control {% if form.correo.errors %}is-invalid{% endif %}" placeholder="">
+                    <div class="invalid-feedback">Por favor, ingrese el correo electrónico.</div>
+                </div>
+
+                <!-- Campo Placa de Mototaxi -->
+                <div class="mb-3">
+                    <label for="mototaxi">Mototaxi asociado:</label>
+                    <select name="mototaxi" id="mototaxi" class="form-control {% if form.mototaxi.errors %}is-invalid{% endif %}">
+                        <option value="" selected>Seleccione un mototaxi</option>
+                        {% for mototaxi in form.fields.mototaxi.queryset %}
+                            <option value="{{ mototaxi.id }}" {% if form.mototaxi.value == mototaxi.id %}selected{% endif %}>
+                                {{ mototaxi }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-feedback">
+                        {% if form.mototaxi.errors %}
+                            {{ form.mototaxi.errors|join:", " }}
+                        {% else %}
+                            Por favor, seleccione un mototaxi.
+                        {% endif %}
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Guardar Conductor
+                </button>
+
+            </form>
+        </div>
+    </div>
+</main>
+
+<!-- JavaScript para la validación -->
+<script>
+    document.getElementById("createConductorForm").addEventListener("submit", function(event) {
+        let form = this;
+        let isValid = true;
+
+        // Recorrer todos los campos requeridos y verificar si están llenos
+        form.querySelectorAll("input").forEach(function(input) {
+            if (input.value.trim() === "") {
+                isValid = false;
+                input.classList.add("is-invalid");  // Añadir clase para mostrar error
+            } else {
+                input.classList.remove("is-invalid");  // Remover clase si está correcto
+            }
+        });
+
+        // Si hay algún campo vacío, detener el envío del formulario
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
+</script>
+
+{% endblock %}

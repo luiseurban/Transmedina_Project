@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <form id="createMototaxiForm" action="{% url 'create_mototaxi' %}" method="POST" class="card card-body" novalidate>
+
+                <h1>Crear Mototaxi</h1>
+
+                {% if request.GET.success %}
+                    <p class="alert alert-success">Mototaxi creado con éxito.</p>
+                {% endif %}
+                {% if error %}
+                    <p class="alert alert-danger">{{ error }}</p>
+                {% endif %}
+
+                {% csrf_token %}
+
+                <!-- Campo placa_mototaxi -->
+                <div class="mb-3">
+                    <label for="placa_mototaxi">Placa del Mototaxi:</label>
+                    <input type="text" name="placa_mototaxi" id="placa_mototaxi" class="form-control {% if form.placa_mototaxi.errors %}is-invalid{% endif %}" placeholder="">
+                    <div class="invalid-feedback">
+                        {% if form.placa_mototaxi.errors %}
+                            {{ form.placa_mototaxi.errors|join:", " }}
+                        {% else %}
+                            Por favor, ingrese la placa del mototaxi.
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Campo modelo -->
+                <div class="mb-3">
+                    <label for="modelo">Modelo:</label>
+                    <input type="text" name="modelo" id="modelo" class="form-control {% if form.nombre.errors %}is-invalid{% endif %}" placeholder="">
+                    <div class="invalid-feedback">Por favor, ingrese el modelo.</div>
+                </div>
+
+                <!-- Campo Apellido -->
+                <div class="mb-3">
+                    <label for="marca">Marca:</label>
+                    <input type="text" name="marca" id="marca" class="form-control {% if form.apellido.errors %}is-invalid{% endif %}" placeholder="">
+                    <div class="invalid-feedback">Por favor, ingrese la marca.</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Guardar Mototaxi
+                </button>
+
+            </form>
+        </div>
+    </div>
+</main>
+
+<!-- JavaScript para la validación -->
+<script>
+    document.getElementById("createMototaxiForm").addEventListener("submit", function(event) {
+        let form = this;
+        let isValid = true;
+
+        // Recorrer todos los campos requeridos y verificar si están llenos
+        form.querySelectorAll("input").forEach(function(input) {
+            if (input.value.trim() === "") {
+                isValid = false;
+                input.classList.add("is-invalid");  // Añadir clase para mostrar error
+            } else {
+                input.classList.remove("is-invalid");  // Remover clase si está correcto
+            }
+        });
+
+        // Si hay algún campo vacío, detener el envío del formulario
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
+</script>
+
+{% endblock %} 
