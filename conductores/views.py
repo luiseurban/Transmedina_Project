@@ -16,18 +16,18 @@ from .models import Conductores
 
 @login_required
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'pages/home/home.html')
 
 def signin(request):
     if request.method == 'GET':
-        return render(request, 'signin.html', {
+        return render(request, 'pages/signin/signin.html', {
             'form': AuthenticationForm
         })
     else:
         user = authenticate(
             request, username=request.POST['username'], password=request.POST['password'])
         if user is None:
-            return render(request, 'signin.html', {
+            return render(request, 'pages/signin/signin.html', {
                 'form': AuthenticationForm, 'error': 'Nombre de usuario o contraseña incorrecta.'})
         else:
             login(request, user)
@@ -36,7 +36,7 @@ def signin(request):
 def signup(request):
 
     if request.method == 'GET':
-        return render(request, 'signup.html', {
+        return render(request, 'pages/signup/signup.html', {
             'form': UserCreationForm
         })
 
@@ -50,10 +50,10 @@ def signup(request):
                 login(request, user)
                 return redirect('conductores')
             except IntegrityError:
-                return render(request, 'signup.html', {'form': UserCreationForm, "Error": 'el usuario ya existe'})
+                return render(request, 'pages/signup/signup.html', {'form': UserCreationForm, "Error": 'el usuario ya existe'})
 
         else:
-            return render(request, 'signup.html', {'form': UserCreationForm, "Error": 'Las contraseñas no coinciden'})
+            return render(request, 'pages/signup/signup.html', {'form': UserCreationForm, "Error": 'Las contraseñas no coinciden'})
 
 def signout(request):
     logout(request)
@@ -65,7 +65,7 @@ def conductores_main_view(request):
     # Verificar si el usuario es admin (usamos is_staff en este ejemplo)
     is_admin = request.user.is_staff
     lista_conductores = Conductores.objects.all()
-    return render(request, 'conductores_view.html', {'is_admin': is_admin, 'lista_conductores': lista_conductores})
+    return render(request, 'pages/ConductorPages/conductores_view/conductores_view.html', {'is_admin': is_admin, 'lista_conductores': lista_conductores})
 
 @login_required
 def conductor_detail(request, cedula):
@@ -84,7 +84,7 @@ def conductor_detail(request, cedula):
                     # Si existe un conductor con la nueva cédula, mostramos un error
                     form.add_error(
                         'cedula', 'Ya existe un conductor con esta cédula.')
-                    return render(request, 'conductor_detail.html', {'conductor': conductor, 'form': form, 'error': 'La cédula ya está registrada.'})
+                    return render(request, 'pages/ConductorPages/conductor_detail/conductor_detail.html', {'conductor': conductor, 'form': form, 'error': 'La cédula ya está registrada.'})
                 # Si la cédula cambió y no existe un duplicado, actualizamos la cédula
                 conductor.cedula = nueva_cedula
             # Guardamos el formulario sin crear un nuevo registro, solo actualizando el conductor existente
@@ -92,10 +92,10 @@ def conductor_detail(request, cedula):
             # Redirigimos a la lista de conductores después de la actualización
             return redirect('conductores')
         else:
-            return render(request, 'conductor_detail.html', {'conductor': conductor, 'form': form, 'error': 'Errores de validación.'})
+            return render(request, 'pages/ConductorPages/conductor_detail/conductor_detail.html', {'conductor': conductor, 'form': form, 'error': 'Errores de validación.'})
 
     form = Conductor_Form(instance=conductor)
-    return render(request, 'conductor_detail.html', {'conductor': conductor, 'form': form})
+    return render(request, 'pages/ConductorPages/conductor_detail/conductor_detail.html', {'conductor': conductor, 'form': form})
 
 @login_required
 def delete_conductor(request, cedula):
@@ -125,7 +125,7 @@ def create_conductor(request):
 
         else:
             # Aquí se maneja el caso de que el formulario no sea válido
-            return render(request, 'create_conductor.html', {
+            return render(request, 'pages/ConductorPages/create_conductor/create_conductor.html', {
                 'form': form,
                 'error': 'Errores de validación: Verifique los datos ingresados.',
                 # Obtiene el mensaje de error específico de la cédula
@@ -134,14 +134,14 @@ def create_conductor(request):
     else:
         form = Conductor_Form()
 
-    return render(request, 'create_conductor.html', {'form': form})
+    return render(request, 'pages/ConductorPages/create_conductor/create_conductor.html', {'form': form})
 
 # CRUD MOTOTAXIS
 @login_required
 def mototaxis_main_view(request):
     is_admin = request.user.is_staff
     lista_mototaxis = Mototaxis.objects.all()
-    return render(request, 'mototaxis_view.html', {'is_admin': is_admin, 'lista_mototaxis': lista_mototaxis})
+    return render(request, 'pages/MotoTaxiPages/mototaxi_view/mototaxis_view.html', {'is_admin': is_admin, 'lista_mototaxis': lista_mototaxis})
 
 @login_required
 def create_mototaxi(request):
@@ -152,7 +152,7 @@ def create_mototaxi(request):
             create_mototaxi1.save()
             return redirect(reverse('create_mototaxi') + '?success=true')
         else:
-            return render(request, 'create_mototaxi.html', {
+            return render(request, 'pages/MotoTaxiPages/create_mototaxi/create_mototaxi.html', {
                     'form': form,
                     'error': 'Errores de validación: Verifique los datos ingresados.',
                     # Obtiene el mensaje de error específico de la cédula
@@ -160,7 +160,7 @@ def create_mototaxi(request):
                 })
     else:
         form = Mototaxi_Form()
-    return render(request, 'create_mototaxi.html', {'form': form})
+    return render(request, 'pages/MotoTaxiPages/create_mototaxi/create_mototaxi.html', {'form': form})
 
 @login_required
 def mototaxi_detail(request, placa_mototaxi):
@@ -179,7 +179,7 @@ def mototaxi_detail(request, placa_mototaxi):
                     # Si existe un mototaxi con la nueva cédula, mostramos un error
                     form.add_error(
                         'placa_mototaxi', 'Ya existe un mototaxi con esta placa.')
-                    return render(request, 'mototaxi_detail.html', {'mototaxi': mototaxi, 'form': form, 'error': 'La placa ya está registrada.'})
+                    return render(request, 'pages/MotoTaxiPages/mototaxi_detail/mototaxi_detail.html', {'mototaxi': mototaxi, 'form': form, 'error': 'La placa ya está registrada.'})
                 # Si la placa cambió y no existe un duplicado, actualizamos la placa
                 mototaxi.placa_mototaxi = nueva_placa_mototaxi
             # Guardamos el formulario sin crear un nuevo registro, solo actualizando el mototaxi existente
@@ -187,10 +187,10 @@ def mototaxi_detail(request, placa_mototaxi):
             # Redirigimos a la lista de mototaxis después de la actualización
             return redirect('mototaxis')
         else:
-            return render(request, 'mototaxi_detail.html', {'mototaxi': mototaxi, 'form': form, 'error': 'Errores de validación.'})
+            return render(request, 'pages/MotoTaxiPages/mototaxi_detail/mototaxi_detail.html', {'mototaxi': mototaxi, 'form': form, 'error': 'Errores de validación.'})
 
     form = Mototaxi_Form(instance=mototaxi)
-    return render(request, 'mototaxi_detalles.html', {'mototaxi': mototaxi, 'form': form})
+    return render(request, 'pages/MotoTaxiPages/mototaxi_detalles/mototaxi_detalles.html', {'mototaxi': mototaxi, 'form': form})
 
 @login_required
 def delete_mototaxi(request, placa_mototaxi):
@@ -209,4 +209,4 @@ def delete_mototaxi(request, placa_mototaxi):
 def novedades_main_view(request):
     is_admin = request.user.is_staff
     lista_novedades = Novedades.objects.all()
-    return render(request, 'novedades_main_view.html', {'is_admin': is_admin, 'lista_novedades': lista_novedades})
+    return render(request, 'pages/NovedadesPages/novedades_main_view/novedades_main_view.html', {'is_admin': is_admin, 'lista_novedades': lista_novedades})
