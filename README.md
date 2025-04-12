@@ -4,6 +4,6 @@ Se usa Django como Framework en conjunto de Boostrap.
 
 Funcionalidades Actuales:
 
-    - Inicio de sesión y registro
-    - Crud Conductores
-    - Crud Mototaxis
+    Inicio de sesión y registro
+    Crud Conductores
+    Crud Mototaxis
