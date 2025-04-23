@@ -23,7 +23,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for mototaxi in lista_mototaxis %}
+                        {% for mototaxi in page_obj %}
                         <tr>
                             <th scope="row">{{forloop.counter}}.</th>
                             <td><a href="{% url 'mototaxi_detail' mototaxi.placa_mototaxi %}">{{ mototaxi.placa_mototaxi }}</a></td>
@@ -33,6 +33,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                {% include "includes/pagination.html" %}
             </div>
         </main>
         </div>
