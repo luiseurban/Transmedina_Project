@@ -7,9 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from .models import Conductores, Mototaxis, Novedades
 from .forms import Conductor_Form, Mototaxi_Form
-
-
-from .models import Conductores
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -62,10 +60,18 @@ def signout(request):
 # CRUD CONDUCTORES
 @login_required
 def conductores_main_view(request):
-    # Verificar si el usuario es admin (usamos is_staff en este ejemplo)
+    # Verificar si el usuario es admin
     is_admin = request.user.is_staff
     lista_conductores = Conductores.objects.all()
-    return render(request, 'pages/ConductorPages/conductores_view/conductores_view.html', {'is_admin': is_admin, 'lista_conductores': lista_conductores})
+    
+    paginator = Paginator(lista_conductores, 10)  # Muestra n conductores por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'pages/ConductorPages/conductores_view/conductores_view.html', {
+        'is_admin': is_admin, 
+        # 'lista_conductores': lista_conductores,
+        'page_obj': page_obj,})
 
 @login_required
 def conductor_detail(request, cedula):
@@ -141,7 +147,13 @@ def create_conductor(request):
 def mototaxis_main_view(request):
     is_admin = request.user.is_staff
     lista_mototaxis = Mototaxis.objects.all()
-    return render(request, 'pages/MotoTaxiPages/mototaxi_view/mototaxis_view.html', {'is_admin': is_admin, 'lista_mototaxis': lista_mototaxis})
+    
+    paginator = Paginator(lista_mototaxis, 10)  # Muestra n mototaxis por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'pages/MotoTaxiPages/mototaxi_view/mototaxis_view.html', {
+        'is_admin': is_admin, 
+        'page_obj': page_obj,})
 
 @login_required
 def create_mototaxi(request):
