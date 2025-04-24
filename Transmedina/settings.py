@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'transmedina',
         'USER': 'postgres',
-        'PASSWORD': '337_3815_04l',
+        'PASSWORD': '124c41+/',
         'HOST': 'localhost',
         'PORT': '5432',
         
