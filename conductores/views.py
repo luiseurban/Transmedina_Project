@@ -8,6 +8,7 @@ from django.urls import reverse
 from .models import Conductores, Mototaxis, Novedades
 from .forms import Conductor_Form, Mototaxi_Form
 from django.core.paginator import Paginator
+from django.contrib import messages
 
 # Create your views here.
 
@@ -62,7 +63,7 @@ def signout(request):
 def conductores_main_view(request):
     # Verificar si el usuario es admin
     is_admin = request.user.is_staff
-    lista_conductores = Conductores.objects.all()
+    lista_conductores = Conductores.objects.all().order_by('id')
     
     paginator = Paginator(lista_conductores, 10)  # Muestra n conductores por página
     page_number = request.GET.get('page')
@@ -74,8 +75,8 @@ def conductores_main_view(request):
         'page_obj': page_obj,})
 
 @login_required
+
 def conductor_detail(request, cedula):
-    # Obtenemos el conductor con la cédula proporcionada
     conductor = get_object_or_404(Conductores, cedula=cedula)
 
     if request.method == 'POST':
@@ -87,21 +88,36 @@ def conductor_detail(request, cedula):
             # Verificamos si la cédula ha cambiado y si ya existe otro conductor con la nueva cédula
             if conductor.cedula != nueva_cedula:
                 if Conductores.objects.filter(cedula=nueva_cedula).exists():
-                    # Si existe un conductor con la nueva cédula, mostramos un error
-                    form.add_error(
-                        'cedula', 'Ya existe un conductor con esta cédula.')
-                    return render(request, 'pages/ConductorPages/conductor_detail/conductor_detail.html', {'conductor': conductor, 'form': form, 'error': 'La cédula ya está registrada.'})
-                # Si la cédula cambió y no existe un duplicado, actualizamos la cédula
-                conductor.cedula = nueva_cedula
-            # Guardamos el formulario sin crear un nuevo registro, solo actualizando el conductor existente
-            form.save()
-            # Redirigimos a la lista de conductores después de la actualización
-            return redirect('conductores')
-        else:
-            return render(request, 'pages/ConductorPages/conductor_detail/conductor_detail.html', {'conductor': conductor, 'form': form, 'error': 'Errores de validación.'})
+                    form.add_error('cedula', 'Ya existe un conductor con esta cédula.')
+                    messages.error(request, 'No se pudo modificar el conductor. La cédula ya está registrada.')
+                    return render(request, 'pages/ConductorPages/conductor_detail/conductor_detail.html', {
+                        'conductor': conductor, 
+                        'form': form
+                    })
 
-    form = Conductor_Form(instance=conductor)
-    return render(request, 'pages/ConductorPages/conductor_detail/conductor_detail.html', {'conductor': conductor, 'form': form})
+                # Si la cédula cambió y no hay duplicado, se actualiza
+                conductor.cedula = nueva_cedula
+
+            # Guardamos el formulario sin crear un nuevo registro
+            form.save()
+
+            # Enviamos mensaje de éxito
+            messages.success(request, 'Conductor modificado con éxito.')
+
+            # Redirigimos para evitar el reenvío del formulario con F5
+            return redirect('conductor_detail', cedula=conductor.cedula)
+
+        else:
+            messages.error(request, 'No se pudo modificar el conductor. Verifica los datos.')
+
+    else:
+        form = Conductor_Form(instance=conductor)
+
+    return render(request, 'pages/ConductorPages/conductor_detail/conductor_detail.html', {
+        'conductor': conductor, 
+        'form': form
+    })
+
 
 @login_required
 def delete_conductor(request, cedula):
@@ -146,7 +162,7 @@ def create_conductor(request):
 @login_required
 def mototaxis_main_view(request):
     is_admin = request.user.is_staff
-    lista_mototaxis = Mototaxis.objects.all()
+    lista_mototaxis = Mototaxis.objects.all().order_by('id')
     
     paginator = Paginator(lista_mototaxis, 10)  # Muestra n mototaxis por página
     page_number = request.GET.get('page')
@@ -202,7 +218,7 @@ def mototaxi_detail(request, placa_mototaxi):
             return render(request, 'pages/MotoTaxiPages/mototaxi_detail/mototaxi_detail.html', {'mototaxi': mototaxi, 'form': form, 'error': 'Errores de validación.'})
 
     form = Mototaxi_Form(instance=mototaxi)
-    return render(request, 'pages/MotoTaxiPages/mototaxi_detalles/mototaxi_detalles.html', {'mototaxi': mototaxi, 'form': form})
+    return render(request, 'pages/MotoTaxiPages/mototaxi_detail/mototaxi_detail.html', {'mototaxi': mototaxi, 'form': form})
 
 @login_required
 def delete_mototaxi(request, placa_mototaxi):
