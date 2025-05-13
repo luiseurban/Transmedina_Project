@@ -6,7 +6,7 @@ from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from .models import Conductores, Mototaxis, Novedades
-from .forms import Conductor_Form, Mototaxi_Form
+from .forms import Conductor_Form, Mototaxi_Form, Novedad_Form
 from django.core.paginator import Paginator
 from django.contrib import messages
 
@@ -236,5 +236,21 @@ def delete_mototaxi(request, placa_mototaxi):
 @login_required
 def novedades_main_view(request):
     is_admin = request.user.is_staff
-    lista_novedades = Novedades.objects.all()
-    return render(request, 'pages/NovedadesPages/novedades_main_view/novedades_main_view.html', {'is_admin': is_admin, 'lista_novedades': lista_novedades})
+    novedades = Novedades.objects.all()
+    return render(request, 'pages/NovedadesPages/novedades_main_view/novedades_main_view.html', {'is_admin': is_admin, 'novedades': novedades})
+
+@login_required
+def create_novedad(request):
+    if request.method == 'POST':
+        form = Novedad_Form(request.POST)
+
+        if form.is_valid():
+
+            create_novedad1 = form.save(commit=False)
+            create_novedad1.user = request.user
+            create_novedad1.save()
+            
+            return redirect(reverse('create_novedad') + '?success=true')
+    else:
+        form = Novedad_Form()
+    return render(request, 'pages/NovedadesPages/create_novedad/create_novedad.html', {'form': form})

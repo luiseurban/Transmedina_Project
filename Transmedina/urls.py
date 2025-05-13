@@ -21,4 +21,5 @@ urlpatterns = [
     path('mototaxis/<str:placa_mototaxi>/delete', views.delete_mototaxi, name = 'delete_mototaxi'),
     #CURD NOVEDADES
     path('novedades/', views.novedades_main_view, name='novedades'),
+    path('novedades/create_novedad/', views.create_novedad, name='create_novedad'),
 ]

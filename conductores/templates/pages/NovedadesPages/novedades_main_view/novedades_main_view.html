@@ -3,31 +3,47 @@
 {% block content %}
 {% if is_admin %}
 {% csrf_token %}
-<h1>Listado de Novedades</h1>
+
 
 <main class="container">
-    <div class="row">
-        <table class="table mt-5">
-            <thead>
-                <tr>
-                    <th scope="col">#</th> <!-- Nueva columna para el contadorr -->
-                    <th scope="col">Titulo Novedad</th>
-                    <th scope="col">Tipo de Novedad</th>
-                    <th scope="col">Mototaxi</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for novedad in lista_novedades %}
-                <tr>
-                    <th scope="row">{{forloop.counter}}.</th>
-                    <td>{{ novedad.titulo_novedad }}</td>
-                    <td>{{ novedad.tipo_novedad }}</td>
-                    <td>{{ novedad.mototaxi }}</td>
-                </tr>
+    <div class = "card">
+        <div class = "card-body">
+            <h1 class="text-center">Novedades</h1>
+           <div class="row">
+               <table class="table mt-5">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th> <!-- Nueva columna para el contadorr -->
+                      <th scope="col">Titulo Novedad</th>
+                      <th scope="col">Tipo de Novedad</th>
+                      <th scope="col">Mototaxi</th>
+                      <th scope="col">Conductor</th>
+                      
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for novedad in novedades %}
+                  <tr>
+                      <th scope="row">{{forloop.counter}}.</th>
+                      <td>{{ novedad.titulo_novedad }}</td>
+                      <td>{{ novedad.tipo_novedad }}</td>
+                      <td>{{ novedad.mototaxi }}</td>
+                      <td>{{ novedad.conductor }}</td>
+                      
+                  </tr>
+                {% empty %}
+                  <tr>
+                      <td colspan="7">No hay novedades registradas.</td>
+                  </tr>
                 {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                </tbody>
+         </table>
+     </div>
+        <div class="d-flex justify-content-center">
+            {% include "includes/pagination.html" %}
+          </div>
+      </div>
+  </div>
 </main>
 
 <main class="container">
@@ -39,7 +55,7 @@
                     <h5 class="card-title">Añadir Novedad</h5>
                     <p class="card-text">Aquí se puede añadir una nueva novedad a la lista de novedades.</p>
                     <div class="d-grid gap-2">
-                        <a href="create_conductor" class="btn btn-primary btn-lg">
+                        <a href="create_novedad" class="btn btn-primary btn-lg">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
                                 <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
                                 <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
