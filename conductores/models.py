@@ -12,7 +12,7 @@ class Mototaxis(models.Model):
     marca = models.CharField(max_length=20)
     
     def __str__(self):
-        return self.placa_mototaxi  
+        return f"{self.placa_mototaxi} - {self.marca}"
 
 
 class Conductores(models.Model):
@@ -28,13 +28,23 @@ class Conductores(models.Model):
     mototaxi = models.ForeignKey(Mototaxis, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self): 
-        return self.cedula
+        return f"{self.nombre} {self.apellido}"
   
 class Novedades(models.Model):
+    ESTADOS = [
+        ('REPARACION', 'Reparacion'),
+        ('ACTIVO', 'Activo'),
+        ('SIN_REPARAR', 'Sin reparar'),
+        ('OTRO', 'Otro'),
+    ]
 
     titulo_novedad = models.CharField(max_length=50)
-    tipo_novedad = models.CharField(max_length=500)
+    tipo_novedad = models.CharField(max_length=500, choices=ESTADOS)
+    
+
     mototaxi = models.ForeignKey(Mototaxis, on_delete=models.SET_NULL, null=True, blank=True)
+    conductor = models.ForeignKey(Conductores, on_delete=models.SET_NULL, null=True, blank=True)
+
     
     def __str__(self): 
         return self.titulo_novedad  

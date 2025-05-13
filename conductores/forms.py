@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Conductores, Mototaxis
+from .models import Conductores, Mototaxis, Novedades
 from django import forms
 
 
@@ -42,3 +42,14 @@ class Mototaxi_Form(forms.ModelForm):
                 raise forms.ValidationError("Ya existe un mototaxi con esta placa.")
 
         return placa_mototaxi
+
+class Novedad_Form(forms.ModelForm):
+    class Meta:
+        model = Novedades
+        fields = ['titulo_novedad', 'tipo_novedad', 'mototaxi', 'conductor']
+        widgets = {
+            'titulo_novedad': forms.TextInput(attrs={'class': 'form-control'}),
+            'tipo_novedad': forms.Select(attrs={'class': 'form-select'}),
+            'mototaxi': forms.Select(attrs={'class': 'form-select'}),
+            'conductor': forms.Select(attrs={'class': 'form-select'}),
+        }

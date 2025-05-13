@@ -1,0 +1,79 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <form id="createNovedadForm" action="{% url 'create_novedad' %}" method="POST" class="card card-body" novalidate>
+
+                <h1>Registrar Novedad</h1>
+
+                {% if request.GET.success %}
+                    <p class="alert alert-success">Novedad registrada con éxito.</p>
+                {% endif %}
+                {% if error %}
+                    <p class="alert alert-danger">{{ error }}</p>
+                {% endif %}
+
+                {% csrf_token %}
+
+                <!-- Campo título de la novedad -->
+                <div class="mb-3">
+                    <label for="titulo_novedad">Título de la Novedad:</label>
+                    <input type="text" name="titulo_novedad" id="titulo_novedad" class="form-control " placeholder="Ej: Falla en frenos" maxlength="50">
+
+                    <div class="form-text">
+                        Describe brevemente la novedad presentada.
+                    </div>
+
+                </div>
+
+                <!-- Campo tipo_novedad -->
+                <div class="mb-3">
+                    <label for="tipo_novedad">Tipo de Novedad:</label>
+                    <select name="tipo_novedad" id="tipo_novedad" class="form-select">
+                        <option value="">-- Selecciona un estado --</option>
+                        <option value="reparacion">Reparación</option>
+                        <option value="activo">Activo</option>
+                        <option value="sin_reparar">Sin reparar</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                    <div class="form-text">
+                        Indica el estado actual del mototaxi.
+                    </div>
+                </div>
+
+                <!-- Campo mototaxi -->
+                <div class="mb-3">
+                    <label for="mototaxi">Mototaxi:</label>
+                    {{ form.mototaxi }}
+                    <div class="form-text">
+                        Selecciona el mototaxi asociado a esta novedad.
+                    </div>
+                </div>
+
+                <!-- Campo conductor -->
+                <div class="mb-3">
+                    <label for="conductor">Conductor:</label>
+                    {{ form.conductor }}
+                    <div class="form-text">
+                        Selecciona el conductor que reporta la novedad.
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-primary">
+                        Registrar Novedad
+                    </button>
+                    <a href="{% url 'novedades' %}" class="btn btn-secondary">
+                        Volver al inicio
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock %}
