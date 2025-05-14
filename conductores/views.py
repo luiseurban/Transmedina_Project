@@ -9,6 +9,9 @@ from .models import Conductores, Mototaxis, Novedades
 from .forms import Conductor_Form, Mototaxi_Form, Novedad_Form
 from django.core.paginator import Paginator
 from django.contrib import messages
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 
@@ -250,7 +253,12 @@ def create_novedad(request):
             create_novedad1.user = request.user
             create_novedad1.save()
             
+            messages.success(request, 'Novedad registrada con éxito.')
             return redirect(reverse('create_novedad') + '?success=true')
+        else:
+            # Log form errors for debugging
+            logger.error(f"Form errors: {form.errors}")
+            messages.error(request, 'No se pudo registrar la novedad. Verifique los datos ingresados.')
     else:
         form = Novedad_Form()
     return render(request, 'pages/NovedadesPages/create_novedad/create_novedad.html', {'form': form})
