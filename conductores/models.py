@@ -17,7 +17,7 @@ class Mototaxis(models.Model):
 
 class Conductores(models.Model):
     
-    cedula = models.IntegerField(unique=True )
+    cedula = models.BigIntegerField(unique=True )
     nombre = models.CharField(max_length=20)
     apellido = models.CharField(max_length=20)
     usuario = models.CharField(max_length=20, unique=True)
