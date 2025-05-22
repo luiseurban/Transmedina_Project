@@ -9,7 +9,63 @@
     <div class = "card">
         <div class = "card-body">
             <h1 class="text-center">Novedades</h1>
-           <div class="row">
+            <div class="row">
+                <form method="GET" class="mb-4">
+  <div class="row">
+    <!-- Filtro tipo de novedad -->
+    <div class="col-md-3">
+      <label for="tipo_novedad">Tipo de Novedad</label>
+      <select name="tipo_novedad" class="form-control">
+        <option value="todos">Todos</option>
+        {% for key, value in tipos_novedad %}
+          <option value="{{ key }}" {% if tipo_novedad_seleccionado == key %}selected{% endif %}>
+            {{ value }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Filtro conductor -->
+    <div class="col-md-3">
+      <label for="conductor">Conductor</label>
+      <select name="conductor" class="form-control">
+        <option value="todos">Todos</option>
+        {% for conductor in conductores %}
+          <option value="{{ conductor.id }}" {% if conductor_seleccionado|add:"" == conductor.id|stringformat:"s" %}selected{% endif %}>
+            {{ conductor.nombre }} {{ conductor.apellido }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Ordenar tipo novedad -->
+    <div class="col-md-3">
+      <label for="ordenar_tipo">Ordenar Tipo Novedad</label>
+      <select name="ordenar_tipo" class="form-control">
+        <option value="">---</option>
+        <option value="alfabetico" {% if ordenar_tipo == "alfabetico" %}selected{% endif %}>A-Z</option>
+        <option value="reciente" {% if ordenar_tipo == "reciente" %}selected{% endif %}>Más reciente</option>
+      </select>
+    </div>
+
+    <!-- Ordenar conductor -->
+    <div class="col-md-3">
+      <label for="ordenar_conductor">Ordenar Conductor</label>
+      <select name="ordenar_conductor" class="form-control">
+        <option value="">---</option>
+        <option value="alfabetico" {% if ordenar_conductor == "alfabetico" %}selected{% endif %}>A-Z</option>
+        <option value="reciente" {% if ordenar_conductor == "reciente" %}selected{% endif %}>Más reciente</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="mt-3 text-center">
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+  </div>
+</form>
+
+           
+
                <table class="table mt-5">
                   <thead>
                     <tr>
