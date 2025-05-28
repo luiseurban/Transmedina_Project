@@ -9,6 +9,7 @@ from .models import Conductores, Mototaxis, Novedades
 from .forms import Conductor_Form, Mototaxi_Form, Novedad_Form
 from django.core.paginator import Paginator
 from django.contrib import messages
+from datetime import datetime
 import logging
 
 logger = logging.getLogger(__name__)
@@ -243,6 +244,8 @@ def novedades_main_view(request):
     conductor_id = request.GET.get('conductor', "todos")
     ordenar_tipo = request.GET.get('ordenar_tipo', "")
     ordenar_conductor = request.GET.get('ordenar_conductor', "")
+    fecha_desde = request.GET.get('fecha_desde', "")
+    fecha_hasta = request.GET.get('fecha_hasta', "")
     
     novedades = Novedades.objects.all()
 
@@ -257,6 +260,20 @@ def novedades_main_view(request):
           novedades = novedades.filter(conductor_id=int(conductor_id))    
         except ValueError:
             pass #Ignora si no es un número
+
+    #Filtro por fecha
+    if fecha_desde:
+        try:
+            fecha_obj = datetime.strptime(fecha_desde, '%Y-%m-%d')
+            novedades = novedades.filter(fecha_novedad__gte=fecha_obj)
+        except ValueError:
+            pass
+    if fecha_hasta:
+        try:
+            fecha_obj = datetime.strptime(fecha_hasta, '%Y-%m-%d')
+            novedades = novedades.filter(fecha_novedad__lte=fecha_obj)
+        except ValueError:
+            pass
 
     #Ordenar por tipo de novedad
     if ordenar_tipo == "reciente":
@@ -285,6 +302,8 @@ def novedades_main_view(request):
         'conductor_seleccionado': conductor_id,
         'ordenar_tipo': ordenar_tipo,
         'ordenar_conductor': ordenar_conductor,
+        "fecha_desde": fecha_desde,
+        "fecha_hasta": fecha_hasta,
         'is_admin': True,
     })
 

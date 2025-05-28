@@ -38,6 +38,20 @@
       </select>
     </div>
 
+    <!-- Fecha inicio -->
+     <div class = "col-md-3">
+      <label for ="fecha_desde"> Desde </label>
+      <input type = "date" name = "fecha_desde" value = "{{fecha_desde}}">
+    </div>
+
+    <!-- Fecha fin -->
+     <div class = "col-md-3">
+      <label for ="fecha_hasta"> Hasta </label>
+      <input type = "date" name = "fecha_hasta" value = "{{fecha_hasta}}">
+    </div>
+
+
+
     <!-- Ordenar tipo novedad -->
     <div class="col-md-3">
       <label for="ordenar_tipo">Ordenar Tipo Novedad</label>
@@ -74,6 +88,7 @@
                       <th scope="col">Tipo de Novedad</th>
                       <th scope="col">Mototaxi</th>
                       <th scope="col">Conductor</th>
+                      <th scope = "col"> Fecha y Hora </th>
                       
                     </tr>
                 </thead>
@@ -85,6 +100,7 @@
                       <td>{{ novedad.tipo_novedad }}</td>
                       <td>{{ novedad.mototaxi }}</td>
                       <td>{{ novedad.conductor }}</td>
+                      <td> {{ novedad.fecha_novedad|date:"d/m/Y H:i" }}</td>
                       
                   </tr>
                 {% empty %}

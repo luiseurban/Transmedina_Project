@@ -40,6 +40,7 @@ class Novedades(models.Model):
 
     titulo_novedad = models.CharField(max_length=50)
     tipo_novedad = models.CharField(max_length=500, choices=ESTADOS)
+    fecha_novedad = models.DateTimeField(default=timezone.now)
     
 
     mototaxi = models.ForeignKey(Mototaxis, on_delete=models.SET_NULL, null=True, blank=True)
