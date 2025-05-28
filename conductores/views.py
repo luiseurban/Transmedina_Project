@@ -308,3 +308,7 @@ def create_novedad(request):
     else:
         form = Novedad_Form()
     return render(request, 'pages/NovedadesPages/create_novedad/create_novedad.html', {'form': form})
+
+
+def about(request):
+    return render(request, 'pages/about_us/about.html')
