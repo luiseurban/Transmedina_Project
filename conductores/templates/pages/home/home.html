@@ -3,26 +3,39 @@
 {% block content %}
 
 <div>
-    <h1 class="text-center mt-5">
+    <h1 class="text-center mt-5 fw-light" style="letter-spacing:1px;">
         Bienvenido a la plataforma de gestión de Transmedina
     </h1>
 </div>
 
-
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white text-center">
-                    <h1>Bienvenido a Transmedina</h1>
+        <div class="col-md-8 d-flex gap-4 justify-content-center">
+            <!-- Card 1 -->
+            <div class="card bg-dark border-0 rounded-3 shadow-sm d-flex flex-column" style="width: 15rem;">
+                <img src="/static/images/driver-image.svg" class="card-img-top mt-4 mb-2" alt="driver-image" style="width: 80px; height: 80px; margin:auto;">
+                <div class="card-body text-light d-flex flex-column">
+                    <h6 class="card-title fw-semibold text-center mb-2">Conductores</h6>
+                    <p class="card-text small text-center mb-3">Administre la información de sus conductores de manera rápida y segura.</p>
+                    <a href="/conductores" class="btn btn-outline-light mt-auto mx-auto rounded-pill px-4 py-1">Gestionar</a>
                 </div>
-                <div class="card-body">
-                    <p class="lead">
-                        La plataforma integral para la gestión de conductores y mototaxis. Aquí, los administradores pueden crear y gestionar perfiles de conductores y vehículos, además de registrar novedades para mantener un control sobre el estado y las reparaciones de cada unidad.
-                    </p>
-                    <p class="lead">
-                        Los conductores, a su vez, tienen acceso para reportar novedades de sus mototaxis y actualizar su propia información de manera ágil y segura. Con <strong>Transmedina</strong>, optimizamos la administración y garantizamos que los vehículos estén siempre en las mejores condiciones.
-                    </p>
+            </div>
+            <!-- Card 2 -->
+            <div class="card bg-dark border-0 rounded-3 shadow-sm d-flex flex-column" style="width: 15rem;">
+                <img src="/static/images/mototaxi-image.svg" class="card-img-top mt-4 mb-2" alt="mototaxi-image" style="width: 80px; height: 80px; margin:auto;">
+                <div class="card-body text-light d-flex flex-column">
+                    <h6 class="card-title fw-semibold text-center mb-2">Mototaxis</h6>
+                    <p class="card-text small text-center mb-3">Gestione la información de sus mototaxis y mantenga su flota organizada.</p>
+                    <a href="/mototaxis" class="btn btn-outline-light mt-auto mx-auto rounded-pill px-4 py-1">Gestionar</a>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="card bg-dark border-0 rounded-3 shadow-sm d-flex flex-column" style="width: 15rem;">
+                <img src="/static/images/novedades-image.svg" class="card-img-top mt-4 mb-2" alt="novedades-image" style="width: 80px; height: 80px; margin:auto;">
+                <div class="card-body text-light d-flex flex-column">
+                    <h6 class="card-title fw-semibold text-center mb-2">Novedades</h6>
+                    <p class="card-text small text-center mb-3">Gestione novedades y avisos importantes para su equipo.</p>
+                    <a href="/novedades" class="btn btn-outline-light mt-auto mx-auto rounded-pill px-4 py-1">Gestionar</a>
                 </div>
             </div>
         </div>
