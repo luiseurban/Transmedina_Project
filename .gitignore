@@ -24,3 +24,4 @@ settings/local.py
 *.db
 Transmedina/settings.py
 node_modules
+staticfiles/
