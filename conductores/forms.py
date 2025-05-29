@@ -46,10 +46,11 @@ class Mototaxi_Form(forms.ModelForm):
 class Novedad_Form(forms.ModelForm):
     class Meta:
         model = Novedades
-        fields = ['titulo_novedad', 'tipo_novedad', 'mototaxi', 'conductor']
+        fields = ['titulo_novedad', 'tipo_novedad', 'mototaxi', 'conductor', 'fecha_novedad']
         widgets = {
             'titulo_novedad': forms.TextInput(attrs={'class': 'form-control'}),
             'tipo_novedad': forms.Select(attrs={'class': 'form-select'}),
             'mototaxi': forms.Select(attrs={'class': 'form-select'}),
             'conductor': forms.Select(attrs={'class': 'form-select'}),
+            'fecha_novedad': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
         }

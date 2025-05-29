@@ -17,7 +17,7 @@ class Mototaxis(models.Model):
 
 class Conductores(models.Model):
     
-    cedula = models.IntegerField(unique=True )
+    cedula = models.BigIntegerField(unique=True )
     nombre = models.CharField(max_length=20)
     apellido = models.CharField(max_length=20)
     usuario = models.CharField(max_length=20, unique=True)
@@ -40,6 +40,7 @@ class Novedades(models.Model):
 
     titulo_novedad = models.CharField(max_length=50)
     tipo_novedad = models.CharField(max_length=500, choices=ESTADOS)
+    fecha_novedad = models.DateTimeField(default=timezone.now)
     
 
     mototaxi = models.ForeignKey(Mototaxis, on_delete=models.SET_NULL, null=True, blank=True)

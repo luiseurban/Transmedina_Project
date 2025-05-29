@@ -22,4 +22,5 @@ urlpatterns = [
     #CURD NOVEDADES
     path('novedades/', views.novedades_main_view, name='novedades'),
     path('novedades/create_novedad/', views.create_novedad, name='create_novedad'),
+    path('about/', views.about, name='about'),
 ]
