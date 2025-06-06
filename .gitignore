@@ -22,5 +22,5 @@ settings/local.py
 *.log
 *.pot
 *.db
+Transmedina/settings.py
 node_modules
-staticfiles
