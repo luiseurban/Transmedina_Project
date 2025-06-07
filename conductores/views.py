@@ -328,6 +328,26 @@ def create_novedad(request):
         form = Novedad_Form()
     return render(request, 'pages/NovedadesPages/create_novedad/create_novedad.html', {'form': form})
 
+@login_required
+def novedad_detail(request, id_novedad):
+    novedad = get_object_or_404(Novedades, id=id_novedad)
+    
+    return render(request, 'pages/NovedadesPages/novedad_detail/novedad_detail.html', {
+        'novedad': novedad,
+    })
+
+@login_required
+def delete_novedad(request, id_novedad):
+    novedad = get_object_or_404(Novedades, id=id_novedad)
+
+    if request.method == 'POST':
+        novedad.delete()
+        messages.success(request, 'Novedad eliminada correctamente.')
+        return redirect('novedades_main_view')
+
+    return render(request, 'pages/NovedadesPages/novedad_confirm_delete.html', {
+        'novedad': novedad
+    })
 
 def about(request):
     return render(request, 'pages/about_us/about.html')

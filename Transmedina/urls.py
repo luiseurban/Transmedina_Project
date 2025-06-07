@@ -20,7 +20,9 @@ urlpatterns = [
     path('mototaxis/<str:placa_mototaxi>/', views.mototaxi_detail, name = 'mototaxi_detail'),
     path('mototaxis/<str:placa_mototaxi>/delete', views.delete_mototaxi, name = 'delete_mototaxi'),
     #CURD NOVEDADES
-    path('novedades/', views.novedades_main_view, name='novedades'),
+    path('novedades/', views.novedades_main_view, name='novedades_main_view'),
     path('novedades/create_novedad/', views.create_novedad, name='create_novedad'),
+    path('novedades/<int:id_novedad>/', views.novedad_detail, name='novedad_detail'),
+    path('novedades/<int:id_novedad>/eliminar', views.delete_novedad, name='delete_novedad'),
     path('about/', views.about, name='about'),
 ]

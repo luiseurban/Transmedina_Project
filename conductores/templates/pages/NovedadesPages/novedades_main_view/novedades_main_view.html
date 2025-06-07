@@ -97,7 +97,7 @@
                   <tr>
                       <th scope="row">{{forloop.counter}}.</th>
                       <td>{{ novedad.titulo_novedad }}</td>
-                      <td>{{ novedad.tipo_novedad }}</td>
+                      <td><a href = "{%url 'novedad_detail' novedad.id %}">{{ novedad.tipo_novedad }}</a></td>
                       <td>{{ novedad.mototaxi }}</td>
                       <td>{{ novedad.conductor }}</td>
                       <td> {{ novedad.fecha_novedad|date:"d/m/Y H:i" }}</td>
