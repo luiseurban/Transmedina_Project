@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "clave-secreta")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = ['localhost','transmedinaproject-production.up.railway.app']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'transmedinaproject-production.up.railway.app']
 
 
 # Application definition
@@ -80,9 +80,15 @@ WSGI_APPLICATION = 'Transmedina.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
-}
+if DEBUG:
+    DATABASES = {
+        'default': dj_database_url.config(env='LOCAL_DATABASE_URL')
+    }
+else:
+    DATABASES = {
+        'default': dj_database_url.config(env='DATABASE_URL')
+    }
+
 
 
 # Password validation
