@@ -54,6 +54,3 @@ Aplicativo web para la gestión de la empresa de transporte "TRANSMEDINA". Permi
 ## Despliegue en Railway
 - El proyecto está preparado para Railway usando el archivo `Procfile` y variables de entorno.
 - Configura las variables de entorno en Railway según el ejemplo de `.env`.
-
-## Contacto
-Para dudas o sugerencias, contacta al equipo de desarrollo.
