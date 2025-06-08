@@ -6,7 +6,6 @@ Aplicativo web para la gestión de la empresa de transporte "TRANSMEDINA". Permi
 - **Django** (backend y lógica de negocio)
 - **Bootstrap** (frontend y estilos)
 - **PostgreSQL** (base de datos principal)
-- **Railway** (despliegue en la nube)
 - **Whitenoise** (servir archivos estáticos en producción)
 - **dj-database-url** y **python-dotenv** (gestión de configuración y variables de entorno)
 
@@ -37,7 +36,7 @@ Aplicativo web para la gestión de la empresa de transporte "TRANSMEDINA". Permi
    DEBUG=True
    SECRET_KEY=tu-clave-secreta
    ```
-   - `DATABASE_URL`: URL de la base de datos para producción (Railway u otro servicio).
+   - `DATABASE_URL`: URL de la base de datos para producción.
    - `LOCAL_DATABASE_URL`: URL de la base de datos local para desarrollo.
    - `DEBUG`: `True` para desarrollo, `False` para producción.
    - `SECRET_KEY`: Clave secreta de Django.
@@ -51,6 +50,6 @@ Aplicativo web para la gestión de la empresa de transporte "TRANSMEDINA". Permi
 6. **Accede a la aplicación:**
    - Abre tu navegador en [http://localhost:8000](http://localhost:8000)
 
-## Despliegue en Railway
-- El proyecto está preparado para Railway usando el archivo `Procfile` y variables de entorno.
-- Configura las variables de entorno en Railway según el ejemplo de `.env`.
+## Despliegue
+- El proyecto está preparado para producción usando el archivo `Procfile` y variables de entorno.
+- Configura las variables de entorno en producción según el ejemplo de `.env`.
