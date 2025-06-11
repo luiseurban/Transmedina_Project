@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'whitenoise.runserver_nostatic',  # For serving static files in development
-    'conductores'
+    'conductores',
+    'conductor_dashboard'
 ]
 
 MIDDLEWARE = [
