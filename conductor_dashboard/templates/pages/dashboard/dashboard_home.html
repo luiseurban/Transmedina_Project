@@ -1,0 +1,50 @@
+{% extends "layout/layout.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h1 class="display-5">Bienvenido al Panel de Conductor</h1>
+            <p class="lead">Aquí puedes gestionar tus datos, mototaxis y novedades.</p>
+        </div>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <svg width="48" height="48" fill="currentColor" class="mb-3 text-primary">
+                        <use xlink:href="/static/images/sprite.svg#icon-person-badge" />
+                    </svg>
+                    <h5 class="card-title">Mi Perfil</h5>
+                    <p class="card-text">Consulta y actualiza tu información personal.</p>
+                    <a href="#" class="btn btn-outline-primary disabled">Ver perfil</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <svg width="48" height="48" fill="currentColor" class="mb-3 text-success">
+                        <use xlink:href="/static/images/sprite.svg#icon-taxi-front-fill" />
+                    </svg>
+                    <h5 class="card-title">Mis Mototaxis</h5>
+                    <p class="card-text">Gestiona los datos de tus mototaxis registrados.</p>
+                    <a href="#" class="btn btn-outline-success disabled">Ver mototaxis</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <svg width="48" height="48" fill="currentColor" class="mb-3 text-warning">
+                        <use xlink:href="/static/images/sprite.svg#icon-file-earmark-plus-fill" />
+                    </svg>
+                    <h5 class="card-title">Novedades</h5>
+                    <p class="card-text">Consulta novedades y reporta incidencias.</p>
+                    <a href="#" class="btn btn-outline-warning disabled">Ver novedades</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

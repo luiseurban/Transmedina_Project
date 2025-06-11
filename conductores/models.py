@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 # Create your models here.
 
 
@@ -29,6 +29,9 @@ class Conductores(models.Model):
 
     def __str__(self): 
         return f"{self.nombre} {self.apellido}"
+    
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.password)
   
 class Novedades(models.Model):
     ESTADOS = [
@@ -48,4 +51,4 @@ class Novedades(models.Model):
 
     
     def __str__(self): 
-        return self.titulo_novedad  
+        return self.titulo_novedad

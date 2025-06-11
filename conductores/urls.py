@@ -5,7 +5,8 @@ from . import views
 urlpatterns = [
     path('', views.home, name='home'),
     path('signup/', views.signup, name='signup'),
-    path('signin/', views.signin, name='signin'),
+    path('signin/', views.redirect_to_conductor_signin, name='signin'),  # <-- Cambiado aquí
+    path('admin_signin/', views.signin, name='admin_signin'),  # <-- nueva ruta para login admin
     path('logout/', views.signout, name='logout'),
     # CRUD CONDUCTORES
     path('conductores/', conductores_views.conductores_main_view, name='conductores'),
