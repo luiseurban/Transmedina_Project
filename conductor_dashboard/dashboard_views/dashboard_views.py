@@ -19,6 +19,10 @@ def conductor_signin(request):
             error = "Usuario no encontrado"
     return render(request, "pages/signin/signin_dashboard.html", {"error": error})
 
+def conductor_logout(request):
+    request.session.pop('conductor_id', None)
+    return redirect('/conductor/conductor_signin/')
+
 def conductor_dashboard_home(request):
     # Verifica si el conductor está autenticado por sesión
     if not request.session.get('conductor_id'):

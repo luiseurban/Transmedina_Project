@@ -22,11 +22,17 @@
                 <img src="/static/images/transmedina.png" alt="" width="60" height="60" class="d-inline-block align-text-center">
                 Transmedina
             </a>
-          </div>
+            <!-- Botón cerrar sesión -->
+            {% if request.session.conductor_id %}
+            <form class="ms-auto" action="/conductor/logout/" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-light">Cerrar sesión</button>
+            </form>
+            {% endif %}
         </div>
-      </nav>
+    </nav>
 
-      <main class="container-fluid mt-3 flex-grow-1">
+    <main class="container-fluid mt-3 flex-grow-1">
         {% block content %}
         {% endblock %}
        </main>
