@@ -6,7 +6,120 @@
         {% include 'layout/control_panel.html' %}
     </div>
     <div class="col-10 offset-2">
-        <!-- Contenido principal -->
+        <div class="container-fluid py-4">
+            <h3 class="fw-bold mb-4">Dashboard</h3>
+            <div class="row mb-4 g-3">
+                <div class="col-md-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="me-3">
+                                <span class="rounded-circle bg-primary d-flex align-items-center justify-content-center" style="width:40px;height:40px;">
+                                    <svg width="24" height="24"><use xlink:href="/static/images/sprite.svg#icon-taxi-front-fill" /></svg>
+                                </span>
+                            </div>
+                            <div>
+                                <div class="fw-semibold fs-5">{{ total_mototaxis }}</div>
+                                <div class="small text-muted">Total Mototaxis</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="me-3">
+                                <span class="rounded-circle bg-success d-flex align-items-center justify-content-center" style="width:40px;height:40px;">
+                                    <svg width="24" height="24"><use xlink:href="/static/images/sprite.svg#icon-person-badge" /></svg>
+                                </span>
+                            </div>
+                            <div>
+                                <div class="fw-semibold fs-5">{{ total_conductores }}</div>
+                                <div class="small text-muted">Total Conductores</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="me-3">
+                                <span class="rounded-circle bg-warning d-flex align-items-center justify-content-center" style="width:40px;height:40px;">
+                                    <svg width="24" height="24"><use xlink:href="/static/images/sprite.svg#icon-file-earmark-plus-fill" /></svg>
+                                </span>
+                            </div>
+                            <div>
+                                <div class="fw-semibold fs-5">{{ novedades_activas }}</div>
+                                <div class="small text-muted">Novedades</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="me-3">
+                                <span class="rounded-circle bg-info d-flex align-items-center justify-content-center" style="width:40px;height:40px;">
+                                    <svg width="24" height="24"><use xlink:href="/static/images/sprite.svg#icon-taxi-front-fill" /></svg>
+                                </span>
+                            </div>
+                            <div>
+                                <div class="fw-semibold fs-5">{{ mototaxis_activas }}</div>
+                                <div class="small text-muted">Mototaxis Activos</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <h5 class="fw-bold mb-3">Actividad Reciente</h5>
+                            <ul class="list-group list-group-flush">
+                                {% for novedad in actividad_reciente %}
+                                <li class="list-group-item d-flex align-items-center">
+                                    <span class="badge bg-secondary me-2" style="width:10px;height:10px;">&nbsp;</span>
+                                    <div>
+                                        <span class="fw-semibold">{{ novedad.titulo_novedad }}</span>
+                                        <span class="text-muted small">- {{ novedad.fecha_novedad|date:"d/m/Y H:i" }}</span><br>
+                                        <span class="small text-muted">
+                                            {% if novedad.mototaxi %}Mototaxi: {{ novedad.mototaxi.placa_mototaxi }}{% endif %}
+                                            {% if novedad.conductor %} | Conductor: {{ novedad.conductor.nombre }} {{ novedad.conductor.apellido }}{% endif %}
+                                        </span>
+                                    </div>
+                                </li>
+                                {% empty %}
+                                <li class="list-group-item">No hay actividad reciente.</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <h5 class="fw-bold mb-3">Novedades Pendientes</h5>
+                            <ul class="list-group list-group-flush">
+                                {% for novedad in novedades_pendientes %}
+                                <li class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-semibold">{{ novedad.titulo_novedad }}</span>
+                                        <span class="badge {% if novedad.tipo_novedad == 'REPARACION' %}bg-danger{% elif novedad.tipo_novedad == 'SIN_REPARAR' %}bg-warning text-dark{% else %}bg-info{% endif %}">
+                                            {{ novedad.get_tipo_novedad_display }}
+                                        </span>
+                                    </div>
+                                    <div class="small text-muted">{{ novedad.fecha_novedad|date:"d/m/Y H:i" }}</div>
+                                    {% if novedad.mototaxi %}<div class="small">Mototaxi: {{ novedad.mototaxi.placa_mototaxi }}</div>{% endif %}
+                                </li>
+                                {% empty %}
+                                <li class="list-group-item">No hay novedades pendientes.</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
