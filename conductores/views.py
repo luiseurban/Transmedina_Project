@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 
 @login_required
 def home(request):
+    # Solo renderiza, sin redirección a conductor
     return render(request, 'pages/home/home.html')
 
 def signin(request):
@@ -64,3 +65,6 @@ def signout(request):
 
 def about(request):
     return render(request, 'pages/about_us/about.html')
+
+def redirect_to_conductor_signin(request):
+    return redirect('/conductor/conductor_signin/')

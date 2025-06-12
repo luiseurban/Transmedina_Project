@@ -1,0 +1,143 @@
+{% extends "layout/layout.html" %}
+
+{% block content %}
+<div class="container-fluid py-4">
+  <div class="row mb-4 align-items-center">
+    <div class="col-md-8">
+      <h3 class="fw-bold mb-1">Dashboard del Conductor</h3>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body d-flex align-items-center">
+          <div class="me-3">
+            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
+              <i class="bi bi-truck"></i>
+            </div>
+          </div>
+          <div>
+            <div class="small text-muted">Mototaxi Asignado</div>
+            <div class="fw-semibold fs-5">MT-2458</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 d-flex justify-content-end">
+      <div class="card shadow-sm">
+        <div class="card-body d-flex align-items-center">
+          <div class="me-2">
+            <span class="badge bg-success rounded-circle" style="width:18px;height:18px;"><i class="bi bi-check"></i></span>
+          </div>
+          <div>
+            <div class="small text-muted">Estado</div>
+            <div class="fw-semibold text-success">Activo</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row g-4">
+    <!-- Información del Vehículo -->
+    <div class="col-lg-3">
+      <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <h6 class="fw-bold mb-3">Información del Vehículo</h6>
+          <div class="mb-2"><span class="text-muted">Modelo:</span> <span class="fw-semibold">Bajaj RE 205</span></div>
+          <div class="mb-2"><span class="text-muted">Año:</span> <span class="fw-semibold">2022</span></div>
+          <div class="mb-2"><span class="text-muted">Placa:</span> <span class="fw-semibold">A4T 89C</span></div>
+          <div class="mb-2"><span class="text-muted">Último Mantenimiento:</span> <span class="fw-semibold">15/04/2023</span></div>
+          <div class="mb-2"><span class="text-muted">Próximo Mantenimiento:</span> <span class="fw-semibold text-danger">15/07/2023</span></div>
+        </div>
+      </div>
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="fw-bold mb-3">Historial de Reportes</h6>
+          <ul class="list-unstyled mb-3">
+            <li class="mb-2">
+              <span class="badge bg-warning me-2" style="width:8px;height:8px;">&nbsp;</span>
+              <span class="small text-muted">12/05/2023</span> <br>
+              <span class="fw-semibold">Cambio de aceite requerido</span>
+            </li>
+            <li class="mb-2">
+              <span class="badge bg-danger me-2" style="width:8px;height:8px;">&nbsp;</span>
+              <span class="small text-muted">28/05/2023</span> <br>
+              <span class="fw-semibold">Freno trasero con desgaste</span>
+            </li>
+            <li>
+              <span class="badge bg-success me-2" style="width:8px;height:8px;">&nbsp;</span>
+              <span class="small text-muted">15/05/2023</span> <br>
+              <span class="fw-semibold">Mantenimiento preventivo completado</span>
+            </li>
+          </ul>
+          <button class="btn btn-outline-secondary btn-sm w-100" disabled>Ver historial completo</button>
+        </div>
+      </div>
+    </div>
+    <!-- Reportar Novedad -->
+    <div class="col-lg-9">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="fw-bold mb-4">Reportar Novedad</h5>
+          <form>
+            <div class="row mb-3">
+              <div class="col-md-6 mb-3 mb-md-0">
+                <label for="tipoNovedad" class="form-label">Tipo de Novedad</label>
+                <select class="form-select" id="tipoNovedad" name="tipo_novedad" required>
+                  <option selected disabled>Seleccione un tipo</option>
+                  <option value="REPARACION">Reparación</option>
+                  <option value="ACTIVO">Activo</option>
+                  <option value="SIN_REPARAR">Sin reparar</option>
+                  <option value="OTRO">Otro</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="tituloNovedad" class="form-label">Título de la Novedad</label>
+                <input type="text" class="form-control" id="tituloNovedad" name="titulo_novedad" placeholder="Ej: Falla en freno trasero" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Descripción</label>
+              <textarea class="form-control" name="descripcion" rows="3" placeholder="Describa detalladamente la novedad..." required></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Nivel de Urgencia</label>
+              <div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="urgencia" id="urgenciaBaja" value="baja">
+                  <label class="form-check-label" for="urgenciaBaja">Baja</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="urgencia" id="urgenciaMedia" value="media">
+                  <label class="form-check-label" for="urgenciaMedia">Media</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="urgencia" id="urgenciaAlta" value="alta">
+                  <label class="form-check-label" for="urgenciaAlta">Alta</label>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Ubicación del Problema</label>
+              <div class="d-flex flex-wrap gap-2">
+                <button type="button" class="btn btn-outline-primary">Parte Frontal</button>
+                <button type="button" class="btn btn-outline-primary">Parte Trasera</button>
+                <button type="button" class="btn btn-outline-primary">Lateral</button>
+                <button type="button" class="btn btn-outline-primary">Motor</button>
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="form-label">Adjuntar Foto</label>
+              <div class="border rounded d-flex flex-column align-items-center justify-content-center py-4" style="min-height:120px;">
+                <i class="bi bi-cloud-upload fs-1 text-secondary mb-2"></i>
+                <div class="text-secondary small">Haga clic para cargar o arrastre una imagen</div>
+                <input type="file" class="form-control mt-2" style="max-width:200px;" >
+              </div>
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+              <button type="reset" class="btn btn-outline-secondary">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Enviar Reporte</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

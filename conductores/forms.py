@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from .models import Conductores, Mototaxis, Novedades
 from django import forms
+from django.contrib.auth.hashers import make_password
 
 
 class Conductor_Form(forms.ModelForm):
@@ -22,6 +23,17 @@ class Conductor_Form(forms.ModelForm):
                 raise forms.ValidationError("Ya existe un conductor con esta cédula.")
 
         return cedula
+
+    def save(self, commit=True):
+        conductor = super().save(commit=False)
+        # Cifrar la contraseña antes de guardar
+        password = self.cleaned_data.get('password')
+        if password:
+            conductor.password = make_password(password)
+        if commit:
+            conductor.save()
+            self.save_m2m()
+        return conductor
 
 class Mototaxi_Form(forms.ModelForm):
     class Meta:
