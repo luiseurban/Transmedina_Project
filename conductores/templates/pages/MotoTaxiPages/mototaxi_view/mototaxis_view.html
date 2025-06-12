@@ -1,81 +1,86 @@
 {% extends 'layout/base.html' %}
 
 {% block content %}
-
-<!-- Verificar si el usuario es admin para mostrar la vista de gestion del mototaxi -->
-{% if is_admin %}
-{% csrf_token %}
-
-
-
-<main class="container">
-    <div class="card">
-        <div class="card-body">
-            <h1 class="text-center" >Mototaxis</h1>
-            <div class="row">
-                <table class="table mt-5">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th> 
-                            <th scope="col">Placa</th>
-                            <th scope="col">Modelo</th>
-                            <th scope="col">Marca</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for mototaxi in page_obj %}
-                        <tr>
-                            <th scope="row">{{forloop.counter}}.</th>
-                            <td><a href="{% url 'mototaxi_detail' mototaxi.placa_mototaxi %}">{{ mototaxi.placa_mototaxi }}</a></td>
-                            <td>{{ mototaxi.modelo }}</td>
-                            <td>{{ mototaxi.marca }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% include "includes/pagination.html" %}
-            </div>
-        </main>
-        </div>
+<div class="row">
+    <div class="col-2 p-0">
+        {% include 'layout/control_panel.html' %}
     </div>
+    <div class="col-10 offset-2">
+        <!-- Verificar si el usuario es admin para mostrar la vista de gestion del mototaxi -->
+        {% if is_admin %}
+        {% csrf_token %}
 
-    <main class="container">
-        <div class="row mt-4">
-            
-            <!-- Primer bloque, columna 1 -->
-            <div class="col-md-6 mb-2">
-                <div class="card w-100 h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Añadir Mototaxi</h5>
-                        <p class="card-text">Aquí se puede añadir un nuevo conductor a la lista de mototaxis.</p>
-                        <div class="d-grid gap-2">
-                            <a href="create_mototaxi" class="btn btn-primary btn-lg">
-                                <svg width="16" height="16" fill="currentColor">
-                                    <use xlink:href="/static/images/sprite.svg#icon-person-plus" />
-                                </svg>
-                            </a>
+
+
+        <main class="container">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="text-center" >Mototaxis</h1>
+                    <div class="row">
+                        <table class="table mt-5">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th> 
+                                    <th scope="col">Placa</th>
+                                    <th scope="col">Modelo</th>
+                                    <th scope="col">Marca</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for mototaxi in page_obj %}
+                                <tr>
+                                    <th scope="row">{{forloop.counter}}.</th>
+                                    <td><a href="{% url 'mototaxi_detail' mototaxi.placa_mototaxi %}">{{ mototaxi.placa_mototaxi }}</a></td>
+                                    <td>{{ mototaxi.modelo }}</td>
+                                    <td>{{ mototaxi.marca }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% include "includes/pagination.html" %}
+                    </div>
+                </main>
+                </div>
+            </div>
+
+            <main class="container">
+                <div class="row mt-4">
+                    
+                    <!-- Primer bloque, columna 1 -->
+                    <div class="col-md-6 mb-2">
+                        <div class="card w-100 h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">Añadir Mototaxi</h5>
+                                <p class="card-text">Aquí se puede añadir un nuevo conductor a la lista de mototaxis.</p>
+                                <div class="d-grid gap-2">
+                                    <a href="create_mototaxi" class="btn btn-primary btn-lg">
+                                        <svg width="16" height="16" fill="currentColor">
+                                            <use xlink:href="/static/images/sprite.svg#icon-person-plus" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-    
-            <!-- Segundo bloque, columna 2 -->
-            <div class="col-md-6 mb-2">
-                <div class="card w-100 h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Modificar mototaxi</h5>
-                        <p class="card-text">Para editar o borrar un mototaxi, hacer click sobre su placa.</p>
+        
+                    <!-- Segundo bloque, columna 2 -->
+                    <div class="col-md-6 mb-2">
+                        <div class="card w-100 h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">Modificar mototaxi</h5>
+                                <p class="card-text">Para editar o borrar un mototaxi, hacer click sobre su placa.</p>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
-            </div>
-
-        </div>
-    </main>
-    
+            </main>
+            
 
 
-{% else %}
-<p>No tienes permiso para ver esta pagina.</p>
-{% endif %}
-
+        {% else %}
+        <p>No tienes permiso para ver esta pagina.</p>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

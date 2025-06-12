@@ -11,6 +11,7 @@ from django.core.paginator import Paginator
 from django.contrib import messages
 from datetime import datetime
 import logging
+from django.db.models import Count
 
 logger = logging.getLogger(__name__)
 
@@ -19,8 +20,28 @@ logger = logging.getLogger(__name__)
 
 @login_required
 def home(request):
-    # Solo renderiza, sin redirección a conductor
-    return render(request, 'pages/home/home.html')
+    # Estadísticas principales
+    total_mototaxis = Mototaxis.objects.count()
+    total_conductores = Conductores.objects.count()
+    total_novedades = Novedades.objects.count()
+    mototaxis_activas = Mototaxis.objects.filter(conductores__isnull=False).distinct().count()
+    novedades_activas = Novedades.objects.exclude(tipo_novedad='ACTIVO').count()
+
+    # Actividad reciente (últimas 5 novedades)
+    actividad_reciente = Novedades.objects.select_related('mototaxi', 'conductor').order_by('-fecha_novedad')[:5]
+
+    # Novedades pendientes (no activas)
+    novedades_pendientes = Novedades.objects.exclude(tipo_novedad='ACTIVO').order_by('-fecha_novedad')[:3]
+
+    return render(request, 'pages/home/home.html', {
+        'total_mototaxis': total_mototaxis,
+        'total_conductores': total_conductores,
+        'total_novedades': total_novedades,
+        'mototaxis_activas': mototaxis_activas,
+        'novedades_activas': novedades_activas,
+        'actividad_reciente': actividad_reciente,
+        'novedades_pendientes': novedades_pendientes,
+    })
 
 def signin(request):
     if request.method == 'GET':

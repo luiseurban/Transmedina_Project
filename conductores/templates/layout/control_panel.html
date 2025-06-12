@@ -1,0 +1,58 @@
+<!-- Sidebar de panel de control estilo oscuro -->
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white position-fixed" style="width: 230px; left: 0; z-index: 1030; top: 0; height: 100vh;">
+    <div class="d-flex align-items-center mb-4" style="height: 76px;">
+        <img src="/static/images/transmedina.png" alt="Transmedina" width="40" height="40" class="me-2">
+        <span class="fw-bold fs-5">Transmedina</span>
+    </div>
+    <div class="mb-4">
+        <span class="fw-bold text-uppercase small text-secondary">Panel de control</span>
+    </div>
+    <ul class="nav nav-pills flex-column mb-4">
+        <li class="nav-item mb-2">
+            <a href="/" class="nav-link text-white d-flex align-items-center gap-2 ps-0">
+                <svg width="22" height="22" fill="currentColor"><use xlink:href="/static/images/sprite.svg#icon-house"/></svg>
+                <span>Inicio</span>
+            </a>
+        </li>
+    </ul>
+    <div class="mb-2 mt-2">
+        <span class="fw-bold text-uppercase small text-secondary">Administración</span>
+    </div>
+    <ul class="nav nav-pills flex-column mb-4">
+        <li class="nav-item mb-2">
+            <a href="/mototaxis" class="nav-link text-white d-flex align-items-center gap-2 ps-0">
+                <svg width="22" height="22" fill="currentColor"><use xlink:href="/static/images/sprite.svg#icon-taxi-front-fill"/></svg>
+                <span>Mototaxis</span>
+            </a>
+        </li>
+        <li class="nav-item mb-2">
+            <a href="/conductores" class="nav-link text-white d-flex align-items-center gap-2 ps-0">
+                <svg width="22" height="22" fill="currentColor"><use xlink:href="/static/images/sprite.svg#icon-person-badge"/></svg>
+                <span>Conductores</span>
+            </a>
+        </li>
+        <li class="nav-item mb-2">
+            <a href="/novedades" class="nav-link text-white d-flex align-items-center gap-2 ps-0">
+                <svg width="22" height="22" fill="currentColor"><use xlink:href="/static/images/sprite.svg#icon-file-earmark-plus-fill"/></svg>
+                <span>Novedades y Reportes</span>
+            </a>
+        </li>
+    </ul>
+    <div class="mb-2 mt-2">
+        <span class="fw-bold text-uppercase small text-secondary">Cuenta</span>
+    </div>
+    <ul class="nav nav-pills flex-column">
+        <li class="nav-item mb-2">
+            <a href="/conductor/conductor_signin/" class="nav-link text-white d-flex align-items-center gap-2 ps-0">
+                <svg width="22" height="22" fill="currentColor"><use xlink:href="/static/images/sprite.svg#icon-arrow-left-right"/></svg>
+                <span>Cambiar a Conductor</span>
+            </a>
+        </li>
+        <li class="nav-item mb-2">
+            <a href="/logout" class="nav-link text-white d-flex align-items-center gap-2 ps-0">
+                <svg width="22" height="22" fill="currentColor"><use xlink:href="/static/images/sprite.svg#icon-box-arrow-in-right"/></svg>
+                <span>Cerrar Sesión</span>
+            </a>
+        </li>
+    </ul>
+</div>
