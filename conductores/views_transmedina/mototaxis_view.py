@@ -10,13 +10,38 @@ from django.urls import reverse
 def mototaxis_main_view(request):
     is_admin = request.user.is_staff
     lista_mototaxis = Mototaxis.objects.all().order_by('id')
-    
+
+    # KPIs para dashboard
+    total_mototaxis = lista_mototaxis.count()
+    marcas_distintas = lista_mototaxis.values('marca').distinct().count()
+    modelos_distintos = lista_mototaxis.values('modelo').distinct().count()
+    mototaxis_asignados = lista_mototaxis.filter(conductores__isnull=False).count() if hasattr(Mototaxis, 'conductores') else 0
+
+    # Último mototaxi creado
+    ultimo_mototaxi_obj = lista_mototaxis.order_by('-id').first()
+    ultimo_mototaxi = f"{ultimo_mototaxi_obj.placa_mototaxi} ({ultimo_mototaxi_obj.marca})" if ultimo_mototaxi_obj else "-"
+    fecha_ultimo_mototaxi = ultimo_mototaxi_obj.id if ultimo_mototaxi_obj else "-"
+
+    # Resumen de acciones recientes
+    accion = request.session.pop('accion_mototaxi', None)
+    mototaxi_accion = request.session.pop('mototaxi_accion', None)
+    fecha_accion = request.session.pop('fecha_accion_mototaxi', None)
+
     paginator = Paginator(lista_mototaxis, 10)  # Muestra n mototaxis por página
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'pages/MotoTaxiPages/mototaxi_view/mototaxis_view.html', {
-        'is_admin': is_admin, 
-        'page_obj': page_obj,})
+        'is_admin': is_admin,
+        'page_obj': page_obj,
+        'total_mototaxis': total_mototaxis,
+        'marcas_distintas': marcas_distintas,
+        'modelos_distintos': modelos_distintos,
+        'mototaxis_asignados': mototaxis_asignados,
+        'ultimo_mototaxi': ultimo_mototaxi,
+        'accion': accion,
+        'mototaxi_accion': mototaxi_accion,
+        'fecha_accion': fecha_accion,
+    })
 
 @login_required
 def create_mototaxi(request):
@@ -25,6 +50,11 @@ def create_mototaxi(request):
         if form.is_valid():
             create_mototaxi1 = form.save(commit=False)
             create_mototaxi1.save()
+            # Guardar acción en sesión
+            request.session['accion_mototaxi'] = 'creado'
+            request.session['mototaxi_accion'] = create_mototaxi1.placa_mototaxi
+            from django.utils import timezone
+            request.session['fecha_accion_mototaxi'] = timezone.now().strftime('%d/%m/%Y %H:%M')
             return redirect(reverse('create_mototaxi') + '?success=true')
         else:
             return render(request, 'pages/MotoTaxiPages/create_mototaxi/create_mototaxi.html', {
@@ -59,6 +89,11 @@ def mototaxi_detail(request, placa_mototaxi):
                 mototaxi.placa_mototaxi = nueva_placa_mototaxi
             # Guardamos el formulario sin crear un nuevo registro, solo actualizando el mototaxi existente
             form.save()
+            # Guardar acción en sesión
+            request.session['accion_mototaxi'] = 'actualizado'
+            request.session['mototaxi_accion'] = mototaxi.placa_mototaxi
+            from django.utils import timezone
+            request.session['fecha_accion_mototaxi'] = timezone.now().strftime('%d/%m/%Y %H:%M')
             # Redirigimos a la lista de mototaxis después de la actualización
             return redirect('mototaxis')
         else:
@@ -74,8 +109,13 @@ def delete_mototaxi(request, placa_mototaxi):
 
     # Si el método de la solicitud es POST, eliminamos el mototaxi
     if request.method == 'POST':
+        placa = mototaxi.placa_mototaxi
         # Eliminar el mototaxi
         mototaxi.delete()
+        # Guardar acción en sesión
+        request.session['accion_mototaxi'] = 'eliminado'
+        request.session['mototaxi_accion'] = placa
+        from django.utils import timezone
+        request.session['fecha_accion_mototaxi'] = timezone.now().strftime('%d/%m/%Y %H:%M')
         # Redirige a la lista de mototaxis después de eliminar
         return redirect('mototaxis')
-    

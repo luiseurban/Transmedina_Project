@@ -8,10 +8,95 @@
     <div class="col-10 offset-2">
         {% if is_admin %}
         {% csrf_token %}
+
+        <!-- DASHBOARD CARDS -->
+        <div class="container-fluid mb-4">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="card text-bg-primary h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <svg width="32" height="32" fill="currentColor" class="me-2">
+                                    <use xlink:href="/static/images/sprite.svg#icon-bell-fill" />
+                                </svg>
+                                <div>
+                                    <h6 class="mb-0">Total Novedades</h6>
+                                    <h3 class="fw-bold">{{ total_novedades }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+  
+                
+                <div class="col-md-3">
+                    <div class="card text-bg-info h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <svg width="32" height="32" fill="currentColor" class="me-2">
+                                    <use xlink:href="/static/images/sprite.svg#icon-clock-history" />
+                                </svg>
+                                <div>
+                                    <h6 class="mb-0">Novedades Recientes</h6>
+                                    <h3 class="fw-bold">{{ novedades_recientes }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GRAFICO PLACEHOLDER Y RESUMEN -->
+        <div class="container mb-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Novedades por Tipo</h5>
+                            <canvas id="novedadesChart" height="120"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Resumen</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Última novedad registrada: <strong>{{ ultima_novedad }}</strong></li>
+                                {% if accion and novedad_accion and fecha_accion %}
+                                    <li class="list-group-item">
+                                        {% if accion == 'eliminada' %}
+                                            Se eliminó la novedad <strong>{{ novedad_accion }}</strong> el <strong>{{ fecha_accion }}</strong>.
+                                        {% elif accion == 'actualizada' %}
+                                            Se actualizó la información de <strong>{{ novedad_accion }}</strong> el <strong>{{ fecha_accion }}</strong>.
+                                        {% elif accion == 'creada' %}
+                                            Se creó la novedad <strong>{{ novedad_accion }}</strong> el <strong>{{ fecha_accion }}</strong>.
+                                        {% endif %}
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESUMEN -->
+        
+
         <main class="container">
             <div class = "card">
                 <div class = "card-body">
-                    <h1 class="text-center">Novedades</h1>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h1 class="text-center mb-0">Novedades</h1>
+                        <a href="create_novedad" class="btn btn-primary btn-lg">
+                            <svg width="20" height="20" fill="currentColor">
+                                <use xlink:href="/static/images/sprite.svg#icon-person-plus" />
+                            </svg>
+                            Añadir Novedad
+                        </a>
+                    </div>
                     <div class="row">
                         <form method="GET" class="mb-4">
                           <div class="row">
@@ -83,8 +168,8 @@
 
                        
 
-                       <table class="table mt-5">
-                          <thead>
+                       <table class="table table-hover mt-3">
+                          <thead class="table-dark">
                             <tr>
                               <th scope="col">#</th> <!-- Nueva columna para el contadorr -->
                               <th scope="col">Titulo Novedad</th>
@@ -100,7 +185,11 @@
                           <tr>
                               <th scope="row">{{forloop.counter}}.</th>
                               <td>{{ novedad.titulo_novedad }}</td>
-                              <td><a href = "{%url 'novedad_detail' novedad.id %}">{{ novedad.tipo_novedad }}</a></td>
+                              <td>
+                                <a href="{% url 'novedad_detail' novedad.id %}" class="text-decoration-none text-primary">
+                                    {{ novedad.tipo_novedad }}
+                                </a>
+                              </td>
                               <td>{{ novedad.mototaxi }}</td>
                               <td>{{ novedad.conductor }}</td>
                               <td> {{ novedad.fecha_novedad|date:"d/m/Y H:i" }}</td>
@@ -108,49 +197,44 @@
                           </tr>
                         {% empty %}
                           <tr>
-                              <td colspan="7">No hay novedades registradas.</td>
+                              <td colspan="6">No hay novedades registradas.</td>
                           </tr>
                         {% endfor %}
                         </tbody>
                  </table>
              </div>
-                <div class="d-flex justify-content-center">
-                    {% include "includes/pagination.html" %}
-                  </div>
-              </div>
-          </div>
-        </main>
-
-        <main class="container">
-            <div class="row mt-4">
-                <!-- Primer bloque, columna 1 -->
-                <div class="col-md-6 mb-2">
-                    <div class="card w-100 h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Añadir Novedad</h5>
-                            <p class="card-text">Aquí se puede añadir una nueva novedad a la lista de novedades.</p>
-                            <div class="d-grid gap-2">
-                                <a href="create_novedad" class="btn btn-primary btn-lg">
-                                    <svg width="16" height="16" fill="currentColor">
-                                        <use xlink:href="/static/images/sprite.svg#icon-person-plus" />
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Segundo bloque, columna 2 -->
-                <div class="col-md-6 mb-2">
-                    <div class="card w-100 h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Modificar novedad</h5>
-                            <p class="card-text">Para editar o borrar una novedad, hacer click sobre su titulo.</p>
-                        </div>
+                    <div class="d-flex justify-content-center">
+                        {% include "includes/pagination.html" %}
                     </div>
                 </div>
             </div>
         </main>
+
+        
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+        // Gráfico de barras por tipo de novedad
+        const ctxNovedades = document.getElementById('novedadesChart');
+        if (ctxNovedades) {
+            new Chart(ctxNovedades, {
+                type: 'bar',
+                data: {
+                    labels: [{% for tipo in novedades_por_tipo_labels %}'{{ tipo }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+                    datasets: [{
+                        label: 'Cantidad',
+                        data: [{% for count in novedades_por_tipo_counts %}{{ count }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+                        backgroundColor: '#0d6efd',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                    }
+                }
+            });
+        }
+        </script>
         {% else %}
         <p>No tienes permiso para ver esta pagina.</p>
         {% endif %}
