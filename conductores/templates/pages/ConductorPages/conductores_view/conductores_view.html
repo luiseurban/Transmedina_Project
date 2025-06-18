@@ -6,19 +6,124 @@
         {% include 'layout/control_panel.html' %}
     </div>
     <div class="col-10 offset-2">
-        <!-- Verificar si el usuario es admin para mostrar la vista de gestion del Conductor -->
         {% if is_admin %}
         {% csrf_token %}
 
+        <!-- DASHBOARD CARDS -->
+        <div class="container-fluid mb-4">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="card text-bg-primary h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <svg width="32" height="32" fill="currentColor" class="me-2">
+                                    <use xlink:href="/static/images/sprite.svg#icon-person-badge" />
+                                </svg>
+                                <div>
+                                    <h6 class="mb-0">Total Conductores</h6>
+                                    <h3 class="fw-bold">{{ total_conductores }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-bg-success h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <svg width="32" height="32" fill="currentColor" class="me-2">
+                                    <use xlink:href="/static/images/sprite.svg#icon-taxi-front-fill" />
+                                </svg>
+                                <div>
+                                    <h6 class="mb-0">Mototaxis Asignados</h6>
+                                    <h3 class="fw-bold">{{ mototaxis_asignados }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-bg-warning h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <svg width="32" height="32" fill="currentColor" class="me-2">
+                                    <use xlink:href="/static/images/sprite.svg#icon-person-x" />
+                                </svg>
+                                <div>
+                                    <h6 class="mb-0">Sin Mototaxi</h6>
+                                    <h3 class="fw-bold">{{ conductores_sin_mototaxi }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-bg-info h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <svg width="32" height="32" fill="currentColor" class="me-2">
+                                    <use xlink:href="/static/images/sprite.svg#icon-envelope" />
+                                </svg>
+                                <div>
+                                    <h6 class="mb-0">Correos Registrados</h6>
+                                    <h3 class="fw-bold">{{ total_correos }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <!-- GRAFICO PLACEHOLDER -->
+        <div class="container mb-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Distribución Conductores/Mototaxis</h5>
+                            <canvas id="conductoresChart" height="120"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Resumen</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Último conductor registrado: <strong>{{ ultimo_conductor }}</strong></li>
+                                <li class="list-group-item">Última actualización: <strong>{{ ultima_actualizacion }}</strong></li>
+                                {% if accion and conductor_accion and fecha_accion %}
+                                    <li class="list-group-item">
+                                        {% if accion == 'eliminado' %}
+                                            Se eliminó el conductor <strong>{{ conductor_accion }}</strong> el <strong>{{ fecha_accion }}</strong>.
+                                        {% elif accion == 'actualizado' %}
+                                            Se actualizó la información de <strong>{{ conductor_accion }}</strong> el <strong>{{ fecha_accion }}</strong>.
+                                        {% endif %}
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <main class="container">
             <div class="card">
                 <div class="card-body">
-                    <h1 class="text-center">Conductores</h1>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h1 class="text-center mb-0">Conductores</h1>
+                        <a href="create_conductor" class="btn btn-primary btn-lg">
+                            <svg width="20" height="20" fill="currentColor">
+                                <use xlink:href="/static/images/sprite.svg#icon-person-plus" />
+                            </svg>
+                            Añadir Conductor
+                        </a>
+                    </div>
                     <div class="row">
-                        <table class="table mt-5">
-                            <thead>
+                        <table class="table table-hover mt-3">
+                            <thead class="table-dark">
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Cédula</th>
@@ -53,41 +158,32 @@
                     </div>   
                 </div> 
             </div>     
-        </main>       
+        </main>   
 
-
-        <main class="container">
-            <div class="row mt-4">
-                <!-- Primer bloque, columna 1 -->
-                <div class="col-md-6 mb-2">
-                    <div class="card w-100 h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Añadir Conductor</h5>
-                            <p class="card-text">Aquí se puede añadir un nuevo conductor a la lista de conductores.</p>
-                            <div class="d-grid gap-2">
-                                <a href="create_conductor" class="btn btn-primary btn-lg">
-                                    <svg width="16" height="16" fill="currentColor">
-                                        <use xlink:href="/static/images/sprite.svg#icon-person-plus" />
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        
-                <!-- Segundo bloque, columna 2 -->
-                <div class="col-md-6 mb-2">
-                    <div class="card w-100 h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Modificar Conductor</h5>
-                            <p class="card-text">Para editar o borrar un conductor, hacer click sobre su cédula.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-        
-
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+        // Placeholder para gráfico de barras
+        const ctx = document.getElementById('conductoresChart');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Asignados', 'Sin Mototaxi'],
+                    datasets: [{
+                        label: 'Conductores',
+                        data: [{{ mototaxis_asignados|default:0 }}, {{ conductores_sin_mototaxi|default:0 }}],
+                        backgroundColor: ['#198754', '#ffc107'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                    }
+                }
+            });
+        }
+        </script>
 
         {% else %}
         <p>No tienes permiso para ver esta pagina.</p>

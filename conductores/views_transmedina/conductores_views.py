@@ -14,6 +14,28 @@ def conductores_main_view(request):
     is_admin = request.user.is_staff
     lista_conductores = Conductores.objects.all().order_by('id')
 
+    # KPIs para dashboard
+    total_conductores = lista_conductores.count()
+    mototaxis_asignados = lista_conductores.filter(mototaxi__isnull=False).count()
+    conductores_sin_mototaxi = lista_conductores.filter(mototaxi__isnull=True).count()
+    total_correos = lista_conductores.exclude(correo__isnull=True).exclude(correo__exact='').values('correo').distinct().count()
+    ultimo_conductor_obj = lista_conductores.order_by('-fecha_de_creacion').first()
+    ultimo_conductor = f"{ultimo_conductor_obj.nombre} {ultimo_conductor_obj.apellido}" if ultimo_conductor_obj else "-"
+    ultima_actualizacion = ultimo_conductor_obj.fecha_de_creacion.strftime('%d/%m/%Y %H:%M') if ultimo_conductor_obj else "-"
+
+    # Resumen de acciones recientes
+    accion = None
+    conductor_accion = None
+    fecha_accion = None
+    if 'accion' in request.session:
+        accion = request.session.get('accion')
+        conductor_accion = request.session.get('conductor_accion')
+        fecha_accion = request.session.get('fecha_accion')
+        # Limpiar después de mostrar
+        del request.session['accion']
+        del request.session['conductor_accion']
+        del request.session['fecha_accion']
+
     # Muestra n conductores por página
     paginator = Paginator(lista_conductores, 10)
     page_number = request.GET.get('page')
@@ -21,8 +43,17 @@ def conductores_main_view(request):
 
     return render(request, 'pages/ConductorPages/conductores_view/conductores_view.html', {
         'is_admin': is_admin,
-        # 'lista_conductores': lista_conductores,
-        'page_obj': page_obj, })
+        'page_obj': page_obj,
+        'total_conductores': total_conductores,
+        'mototaxis_asignados': mototaxis_asignados,
+        'conductores_sin_mototaxi': conductores_sin_mototaxi,
+        'total_correos': total_correos,
+        'ultimo_conductor': ultimo_conductor,
+        'ultima_actualizacion': ultima_actualizacion,
+        'accion': accion,
+        'conductor_accion': conductor_accion,
+        'fecha_accion': fecha_accion,
+    })
 
 
 @login_required
@@ -53,6 +84,12 @@ def conductor_detail(request, cedula):
             # Guardamos el formulario sin crear un nuevo registro
             form.save()
 
+            # Guardar acción en sesión
+            request.session['accion'] = 'actualizado'
+            request.session['conductor_accion'] = f"{conductor.nombre} {conductor.apellido}"
+            from django.utils import timezone
+            request.session['fecha_accion'] = timezone.now().strftime('%d/%m/%Y %H:%M')
+
             # Enviamos mensaje de éxito
             messages.success(request, 'Conductor modificado con éxito.')
 
@@ -74,14 +111,16 @@ def conductor_detail(request, cedula):
 
 @login_required
 def delete_conductor(request, cedula):
-    # Obtén el conductor con la cédula proporcionada (usando la cédula como pk)
     conductor = get_object_or_404(Conductores, cedula=cedula)
-
-    # Si el método de la solicitud es POST, eliminamos el conductor
     if request.method == 'POST':
-        # Eliminar el conductor
+        nombre = conductor.nombre
+        apellido = conductor.apellido
         conductor.delete()
-        # Redirige a la lista de conductores después de eliminar
+        # Guardar acción en sesión
+        request.session['accion'] = 'eliminado'
+        request.session['conductor_accion'] = f"{nombre} {apellido}"
+        from django.utils import timezone
+        request.session['fecha_accion'] = timezone.now().strftime('%d/%m/%Y %H:%M')
         return redirect('conductores')
 
 
