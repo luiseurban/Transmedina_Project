@@ -182,14 +182,10 @@
                         </thead>
                         <tbody>
                           {% for novedad in novedades %}
-                          <tr>
+                          <tr class="table-row-link" style="cursor:pointer;" data-href="{% url 'novedad_detail' novedad.id %}">
                               <th scope="row">{{forloop.counter}}.</th>
                               <td>{{ novedad.titulo_novedad }}</td>
-                              <td>
-                                <a href="{% url 'novedad_detail' novedad.id %}" class="text-decoration-none text-primary">
-                                    {{ novedad.tipo_novedad }}
-                                </a>
-                              </td>
+                              <td>{{ novedad.tipo_novedad }}</td>
                               <td>{{ novedad.mototaxi }}</td>
                               <td>{{ novedad.conductor }}</td>
                               <td> {{ novedad.fecha_novedad|date:"d/m/Y H:i" }}</td>
@@ -235,6 +231,13 @@
             });
         }
         </script>
+        <script>
+    document.querySelectorAll('.table-row-link').forEach(row => {
+        row.addEventListener('click', () => {
+            window.location = row.dataset.href;
+        });
+    });
+    </script>
         {% else %}
         <p>No tienes permiso para ver esta pagina.</p>
         {% endif %}

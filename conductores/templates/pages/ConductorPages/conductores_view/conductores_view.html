@@ -136,9 +136,9 @@
                             </thead>
                             <tbody>
                                 {% for conductor in page_obj %}
-                                <tr>
+                                <tr class="table-row-link" style="cursor:pointer;" data-href="{% url 'conductor_detail' conductor.cedula %}">
                                     <th scope="row">{{ forloop.counter }}.</th>
-                                    <td><a href="{% url 'conductor_detail' conductor.cedula %}">{{ conductor.cedula }}</a></td>
+                                    <td>{{ conductor.cedula }}</td>
                                     <td>{{ conductor.nombre }}</td>
                                     <td>{{ conductor.apellido }}</td>
                                     <td>{{ conductor.usuario }}</td>
@@ -183,6 +183,12 @@
                 }
             });
         }
+
+        document.querySelectorAll('.table-row-link').forEach(row => {
+            row.addEventListener('click', () => {
+                window.location = row.dataset.href;
+            });
+        });
         </script>
 
         {% else %}

@@ -135,9 +135,9 @@
                             </thead>
                             <tbody>
                                 {% for mototaxi in page_obj %}
-                                <tr>
+                                <tr class="table-row-link" style="cursor:pointer;" data-href="{% url 'mototaxi_detail' mototaxi.placa_mototaxi %}">
                                     <th scope="row">{{forloop.counter}}.</th>
-                                    <td><a href="{% url 'mototaxi_detail' mototaxi.placa_mototaxi %}">{{ mototaxi.placa_mototaxi }}</a></td>
+                                    <td>{{ mototaxi.placa_mototaxi }}</td>
                                     <td>{{ mototaxi.modelo }}</td>
                                     <td>{{ mototaxi.marca }}</td>
                                 </tr>
@@ -179,6 +179,12 @@
                 }
             });
         }
+
+        document.querySelectorAll('.table-row-link').forEach(row => {
+            row.addEventListener('click', () => {
+                window.location = row.dataset.href;
+            });
+        });
         </script>
 
         {% else %}
