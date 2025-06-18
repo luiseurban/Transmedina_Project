@@ -28,8 +28,14 @@
                         <!-- Tipo de novedad -->
                         <div class="mb-3">
                             <label for="tipo_novedad">Tipo de Novedad:</label>
-                            <input type="text" name="tipo_novedad" id="tipo_novedad" class="form-control {% if form.tipo_novedad.errors %}is-invalid{% endif %}" value="{{ novedad.tipo_novedad }}">
-                            <div class="invalid-feedback">Por favor, ingrese el tipo de novedad.</div>
+                            <select name="tipo_novedad" id="tipo_novedad" class="form-select {% if form.tipo_novedad.errors %}is-invalid{% endif %}">
+                                <option value="">-- Selecciona un estado --</option>
+                                <option value="REPARACION" {% if novedad.tipo_novedad == "REPARACION" %}selected{% endif %}>Reparación</option>
+                                <option value="ACTIVO" {% if novedad.tipo_novedad == "ACTIVO" %}selected{% endif %}>Activo</option>
+                                <option value="SIN_REPARAR" {% if novedad.tipo_novedad == "SIN_REPARAR" %}selected{% endif %}>Sin reparar</option>
+                                <option value="OTRO" {% if novedad.tipo_novedad == "OTRO" %}selected{% endif %}>Otro</option>
+                            </select>
+                            <div class="invalid-feedback">Por favor, seleccione el tipo de novedad.</div>
                         </div>
                         <!-- Mototaxi -->
                         <div class="mb-3">

@@ -147,7 +147,7 @@ def create_novedad(request):
 @login_required
 def novedad_detail(request, id_novedad):
     novedad = get_object_or_404(Novedades, id=id_novedad)
-    
+
     return render(request, 'pages/NovedadesPages/novedad_detail/novedad_detail.html', {
         'novedad': novedad,
     })
