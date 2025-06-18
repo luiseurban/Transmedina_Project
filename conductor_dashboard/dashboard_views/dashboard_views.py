@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from conductores.models import Conductores
+from conductores.models import Conductores, Mototaxis, Novedades
 
 def conductor_signin(request):
     error = None
@@ -25,8 +25,21 @@ def conductor_logout(request):
 
 def conductor_dashboard_home(request):
     # Verifica si el conductor está autenticado por sesión
-    if not request.session.get('conductor_id'):
+    conductor_id = request.session.get('conductor_id')
+    if not conductor_id:
         return redirect('/conductor/conductor_signin/')
-    # ... lógica de la vista ...
-    return render(request, 'pages/dashboard/dashboard_home.html')
+
+    # Obtener el conductor autenticado
+    conductor = Conductores.objects.select_related('mototaxi').get(id=conductor_id)
+    mototaxi = conductor.mototaxi
+
+    # Obtener últimos 3 reportes/novedades del conductor
+    novedades = Novedades.objects.filter(conductor=conductor).order_by('-fecha_novedad')[:3]
+
+    context = {
+        'conductor': conductor,
+        'mototaxi': mototaxi,
+        'novedades': novedades,
+    }
+    return render(request, 'pages/dashboard/dashboard_home.html', context)
 
