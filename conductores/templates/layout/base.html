@@ -28,7 +28,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
 
-                <!-- PAGINA PRINCIPAL -->
+                {% comment %} <!-- PAGINA PRINCIPAL -->
                 <li class="nav-item">
                     <a href="/" class="nav-link">
                         <svg width="16" height="16" fill="currentColor">
@@ -36,10 +36,10 @@
                         </svg>
                         Pagina Principal
                     </a>
-                </li>
+                </li> {% endcomment %}
                 
                 {% if user.is_authenticated %}
-                <!-- PAGINA CONDUCTORES -->
+                {% comment %} <!-- PAGINA CONDUCTORES -->
                 <li class="nav-item">
                     <a href="/conductores" class="nav-link">
                         <svg width="16" height="16" fill="currentColor">
@@ -80,7 +80,7 @@
                         </svg>
                         Cerrar sesion
                     </a>
-                </li>
+                </li> {% endcomment %}
                 <!-- usuario actual -->
                 <li class="nav-item ">
                     <a href="#" class="nav-link">
