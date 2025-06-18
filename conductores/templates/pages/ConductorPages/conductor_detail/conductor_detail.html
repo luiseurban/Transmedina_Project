@@ -2,119 +2,114 @@
 
 {% block content %}
 
-
 <main class="container">
     <div class="row">
         <div class="col-md-4 offset-md-4">
-            <!-- Formulario de edición de conductor -->
-            <form id="conductor_detail" action="{% url 'conductor_detail' conductor.cedula %}" method="POST" class="card card-body" novalidate>
-                <h1>Editar Conductor</h1>
-
-                {% if error %}
-                    <p class="alert alert-danger">{{ error }}</p>
-                {% endif %}
-
-                {% csrf_token %}
-
-                <!-- Campo Cedula -->
-                <div class="mb-3">
-                    <label for="cedula">Cédula:</label>
-                    <input type="text" name="cedula" id="cedula" class="form-control {% if form.cedula.errors %}is-invalid{% endif %}" value="{{ conductor.cedula }}" >
-                    <div class="invalid-feedback">
-                        {% if form.cedula.errors %}
-                            {{ form.cedula.errors|join:", " }}
-                        {% else %}
-                            Por favor, ingrese la cédula.
+            <div class="card">
+                <div class="card-body">
+                    <!-- Formulario de edición de conductor -->
+                    <form id="conductor_detail" action="{% url 'conductor_detail' conductor.cedula %}" method="POST" novalidate>
+                        <h1>Editar Conductor</h1>
+                        {% if error %}
+                            <p class="alert alert-danger">{{ error }}</p>
                         {% endif %}
-                    </div>
-                </div>
+                        {% csrf_token %}
+                        <!-- Campo Cedula -->
+                        <div class="mb-3">
+                            <label for="cedula">Cédula:</label>
+                            <input type="text" name="cedula" id="cedula" class="form-control {% if form.cedula.errors %}is-invalid{% endif %}" value="{{ conductor.cedula }}" >
+                            <div class="invalid-feedback">
+                                {% if form.cedula.errors %}
+                                    {{ form.cedula.errors|join:", " }}
+                                {% else %}
+                                    Por favor, ingrese la cédula.
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- Campo Nombre -->
+                        <div class="mb-3">
+                            <label for="nombre">Nombre:</label>
+                            <input type="text" name="nombre" id="nombre" class="form-control {% if form.nombre.errors %}is-invalid{% endif %}" value="{{ conductor.nombre }}">
+                            <div class="invalid-feedback">Por favor, ingrese el nombre.</div>
+                        </div>
+                        <!-- Campo Apellido -->
+                        <div class="mb-3">
+                            <label for="apellido">Apellido:</label>
+                            <input type="text" name="apellido" id="apellido" class="form-control {% if form.apellido.errors %}is-invalid{% endif %}" value="{{ conductor.apellido }}">
+                            <div class="invalid-feedback">Por favor, ingrese el apellido.</div>
+                        </div>
+                        <!-- Campo Usuario -->
+                        <div class="mb-3">
+                            <label for="usuario">Usuario:</label>
+                            <input type="text" name="usuario" id="usuario" class="form-control {% if form.usuario.errors %}is-invalid{% endif %}" value="{{ conductor.usuario }}">
+                            <div class="invalid-feedback">Por favor, ingrese el nombre de usuario.</div>
+                        </div>
+                        <!-- Campo Contraseña -->
+                        <div class="mb-3">
+                            <label for="password">Contraseña:</label>
+                            <input type="password" name="password" id="password" class="form-control {% if form.password.errors %}is-invalid{% endif %}" value="">
+                            <div class="invalid-feedback">Por favor, ingrese la contraseña.</div>
+                        </div>
+                        <!-- Campo Correo Electrónico -->
+                        <div class="mb-3">
+                            <label for="correo">Correo electrónico:</label>
+                            <input type="text" name="correo" id="correo" class="form-control {% if form.correo.errors %}is-invalid{% endif %}" value="{{ conductor.correo }}">
+                            <div class="invalid-feedback">Por favor, ingrese el correo electrónico.</div>
+                        </div>
+                        <!-- Campo Placa de Mototaxi -->
+                        <div class="mb-3">
+                            <label for="mototaxi">Mototaxi asociado:</label>
+                            <select name="mototaxi" id="mototaxi" class="form-control {% if form.mototaxi.errors %}is-invalid{% endif %}">
+                                <option value="" {% if not conductor.mototaxi %}selected{% endif %}>Seleccione un mototaxi</option>
+                                {% for mototaxi in form.fields.mototaxi.queryset %}
+                                    <option value="{{ mototaxi.id }}" {% if conductor.mototaxi and conductor.mototaxi.id == mototaxi.id %}selected{% endif %}>
+                                        {{ mototaxi }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">
+                                {% if form.mototaxi.errors %}
+                                    {{ form.mototaxi.errors|join:", " }}
+                                {% else %}
+                                    Por favor, seleccione un mototaxi.
+                                {% endif %}
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
+                            </svg>
+                            Editar Conductor
+                        </button>
+                    </form>
 
-                <!-- Campo Nombre -->
-                <div class="mb-3">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" name="nombre" id="nombre" class="form-control {% if form.nombre.errors %}is-invalid{% endif %}" value="{{ conductor.nombre }}">
-                    <div class="invalid-feedback">Por favor, ingrese el nombre.</div>
-                </div>
+                    <hr>
 
-                <!-- Campo Apellido -->
-                <div class="mb-3">
-                    <label for="apellido">Apellido:</label>
-                    <input type="text" name="apellido" id="apellido" class="form-control {% if form.apellido.errors %}is-invalid{% endif %}" value="{{ conductor.apellido }}">
-                    <div class="invalid-feedback">Por favor, ingrese el apellido.</div>
-                </div>
+                    <!-- Formulario de eliminación -->
+                    <form action="{% url 'delete_conductor' conductor.cedula %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger w-100 mt-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                            </svg>
+                            Eliminar
+                        </button>
+                    </form>
 
-                <!-- Campo Usuario -->
-                <div class="mb-3">
-                    <label for="usuario">Usuario:</label>
-                    <input type="text" name="usuario" id="usuario" class="form-control {% if form.usuario.errors %}is-invalid{% endif %}" value="{{ conductor.usuario }}">
-                    <div class="invalid-feedback">Por favor, ingrese el nombre de usuario.</div>
-                </div>
+                    <hr>
 
-                <!-- Campo Contraseña -->
-                <div class="mb-3">
-                    <label for="password">Contraseña:</label>
-                    <input type="password" name="password" id="password" class="form-control {% if form.password.errors %}is-invalid{% endif %}" value="">
-                    <div class="invalid-feedback">Por favor, ingrese la contraseña.</div>
-                </div>
-
-                <!-- Campo Correo Electrónico -->
-                <div class="mb-3">
-                    <label for="correo">Correo electrónico:</label>
-                    <input type="text" name="correo" id="correo" class="form-control {% if form.correo.errors %}is-invalid{% endif %}" value="{{ conductor.correo }}">
-                    <div class="invalid-feedback">Por favor, ingrese el correo electrónico.</div>
-                </div>
-
-                <!-- Campo Placa de Mototaxi -->
-                <div class="mb-3">
-                    <label for="mototaxi">Mototaxi asociado:</label>
-                    <select name="mototaxi" id="mototaxi" class="form-control {% if form.mototaxi.errors %}is-invalid{% endif %}">
-                        <option value="" {% if not conductor.mototaxi %}selected{% endif %}>Seleccione un mototaxi</option>
-                        {% for mototaxi in form.fields.mototaxi.queryset %}
-                            <option value="{{ mototaxi.id }}" {% if conductor.mototaxi and conductor.mototaxi.id == mototaxi.id %}selected{% endif %}>
-                                {{ mototaxi }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                    <div class="invalid-feedback">
-                        {% if form.mototaxi.errors %}
-                            {{ form.mototaxi.errors|join:", " }}
-                        {% else %}
-                            Por favor, seleccione un mototaxi.
-                        {% endif %}
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-primary mb-2 w-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
-                        <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
-                    </svg>
-                    Editar Conductor
-                </button>
-            </form>
-
-            <!-- Botones de eliminar y regresar en columna, mismo ancho -->
-            <div class="d-grid gap-2 mt-2">
-                <form action="{% url 'delete_conductor' conductor.cedula %}" method="POST" class="w-100">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger w-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                    <!-- Botón de regresar -->
+                    <button type="button" class="btn btn-secondary w-100 mt-1" onclick="window.history.back();">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
                         </svg>
-                        Eliminar
+                        Regresar
                     </button>
-                </form>
-                <a href="/conductores" class="btn btn-secondary w-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
-                    </svg>
-                    Regresar
-                </a>
+                </div>
             </div>
         </div>
     </div>
 </main>
-
-
 
 <!-- JavaScript para la validación -->
 <script>
@@ -138,7 +133,5 @@
         }
     });
 </script>
-
-
 
 {% endblock %}
